@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("TicketManagementSystemMongo")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+4ec050e135b5cb9125d653ab1d4906a7ff68d3af")]
 [assembly: System.Reflection.AssemblyProductAttribute("TicketManagementSystemMongo")]
 [assembly: System.Reflection.AssemblyTitleAttribute("TicketManagementSystemMongo")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

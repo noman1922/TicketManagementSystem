@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "D:\\project\\TicketManagementSystemMongo\\TicketManagementSystemMongo.csproj": {}
+    "D:\\project\\TicketManagementSystem\\TicketManagementSystemMongo.csproj": {}
   },
   "projects": {
-    "D:\\project\\TicketManagementSystemMongo\\TicketManagementSystemMongo.csproj": {
+    "D:\\project\\TicketManagementSystem\\TicketManagementSystemMongo.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\project\\TicketManagementSystemMongo\\TicketManagementSystemMongo.csproj",
+        "projectUniqueName": "D:\\project\\TicketManagementSystem\\TicketManagementSystemMongo.csproj",
         "projectName": "TicketManagementSystemMongo",
-        "projectPath": "D:\\project\\TicketManagementSystemMongo\\TicketManagementSystemMongo.csproj",
+        "projectPath": "D:\\project\\TicketManagementSystem\\TicketManagementSystemMongo.csproj",
         "packagesPath": "C:\\Users\\User\\.nuget\\packages\\",
-        "outputPath": "D:\\project\\TicketManagementSystemMongo\\obj\\",
+        "outputPath": "D:\\project\\TicketManagementSystem\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\User\\AppData\\Roaming\\NuGet\\NuGet.Config"
@@ -52,7 +52,7 @@
             },
             "MongoDB.Driver": {
               "target": "Package",
-              "version": "[2.19.0, )"
+              "version": "[3.5.2, )"
             },
             "Swashbuckle.AspNetCore": {
               "target": "Package",

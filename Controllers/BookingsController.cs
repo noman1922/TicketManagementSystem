@@ -6,7 +6,7 @@ using TicketManagementSystemMongo.Models;
 namespace TicketManagementSystemMongo.Controllers
 {
     [ApiController]
-    [Route("api/[controller]")]   // Base route: /api/bookings
+    [Route("api/[controller]")]
     public class BookingsController : ControllerBase
     {
         private readonly MongoDbContext _context;
@@ -28,7 +28,8 @@ namespace TicketManagementSystemMongo.Controllers
         [HttpGet("{id}")]
         public IActionResult GetBooking(string id)
         {
-            var booking = _context.Bookings.Find(b => b.BookingId == id).FirstOrDefault();
+            // FIXED: Use Id instead of BookingId
+            var booking = _context.Bookings.Find(b => b.Id == id).FirstOrDefault();
             if (booking == null) return NotFound();
             return Ok(booking);
         }
@@ -37,29 +38,36 @@ namespace TicketManagementSystemMongo.Controllers
         [HttpPost]
         public IActionResult CreateBooking([FromBody] Booking booking)
         {
-            booking.BookingId = Guid.NewGuid().ToString();   // generate GUID string
-            booking.BookingDate = DateTime.UtcNow;           // set booking timestamp
+            // REMOVED: booking.BookingId = Guid.NewGuid().ToString();
+            booking.BookingDate = DateTime.UtcNow;
 
-            // ✅ Validate user, event, and ticket type exist
-            var userExists = _context.Users.Find(u => u.UserId == booking.UserId).Any();
-            var eventExists = _context.Events.Find(e => e.EventId == booking.EventId).Any();
-            var ticketType = _context.TicketTypes.Find(t => t.TicketTypeId == booking.TicketTypeId).FirstOrDefault();
+            // FIXED: Check if user exists by Id (not UserId)
+            var userExists = _context.Users.Find(u => u.Id == booking.UserId).Any();
+            
+            // FIXED: Check if event exists by Id
+            var eventExists = _context.Events.Find(e => e.Id == booking.EventId).Any();
+            
+            // FIXED: Check if ticket type exists by Id
+            var ticketType = _context.TicketTypes.Find(t => t.Id == booking.TicketTypeId).FirstOrDefault();
 
             if (!userExists || !eventExists || ticketType == null)
                 return BadRequest("Invalid UserId, EventId, or TicketTypeId.");
 
-            // ✅ Calculate total amount
+            // Calculate total amount
             booking.TotalAmount = ticketType.Price * booking.Quantity;
 
             _context.Bookings.InsertOne(booking);
-            return CreatedAtAction(nameof(GetBooking), new { id = booking.BookingId }, booking);
+            
+            // FIXED: Return Id instead of BookingId
+            return CreatedAtAction(nameof(GetBooking), new { id = booking.Id }, booking);
         }
 
         // DELETE: /api/bookings/{id}
         [HttpDelete("{id}")]
         public IActionResult DeleteBooking(string id)
         {
-            var result = _context.Bookings.DeleteOne(b => b.BookingId == id);
+            // FIXED: Use Id instead of BookingId
+            var result = _context.Bookings.DeleteOne(b => b.Id == id);
             if (result.DeletedCount == 0) return NotFound();
             return NoContent();
         }

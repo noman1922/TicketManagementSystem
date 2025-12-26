@@ -5,12 +5,16 @@ using Microsoft.OpenApi.Models;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using TicketManagementSystemMongo.Services; // ✅ Email Service 
 
 
 var builder = WebApplication.CreateBuilder(args);
 
 // ✅ MongoDB Context
 builder.Services.AddSingleton<MongoDbContext>();
+
+// ✅ Email Service - MUST BE HERE (BEFORE Build())
+builder.Services.AddSingleton<EmailService>();
 
 // ✅ Controllers + Views
 builder.Services.AddControllersWithViews();
@@ -57,14 +61,38 @@ builder.Services.AddAuthentication(options =>
     };
 });
 
-var app = builder.Build();
+var app = builder.Build();  // ✅ Build() comes AFTER all service registrations
 
-// ✅ Seed Data (unchanged)
+// ✅ Test MongoDB Connection (COMMENT THIS OUT FOR NOW - it's causing issues)
+/*
+using (var scope = app.Services.CreateScope())
+{
+    try
+    {
+        var context = scope.ServiceProvider.GetRequiredService<MongoDbContext>();
+        
+        // Try to list databases to test connection
+        var client = new MongoClient(builder.Configuration["MongoDBSettings:ConnectionString"]);
+        var databases = client.ListDatabaseNames().ToList();
+        
+        Console.WriteLine("✅ MongoDB Connected Successfully!");
+        Console.WriteLine($"Available databases: {string.Join(", ", databases)}");
+    }
+    catch (Exception ex)
+    {
+        Console.WriteLine($"❌ MongoDB Connection Failed: {ex.Message}");
+    }
+}
+*/
+
+// ✅ Seed Data (COMMENT THIS OUT FOR NOW)
+/*
 using (var scope = app.Services.CreateScope())
 {
     var context = scope.ServiceProvider.GetRequiredService<MongoDbContext>();
     // ... your seed code stays exactly the same
 }
+*/
 
 // ✅ Swagger UI
 if (app.Environment.IsDevelopment())

@@ -3,12 +3,10 @@ using MongoDB.Bson.Serialization.Attributes;
 
 public class Event
 {
-    [BsonId] 
-    public ObjectId Id { get; set; }   // MongoDB internal _id
-
-    [BsonRepresentation(BsonType.String)]
-    public string? EventId { get; set; }   // Your GUID string
-
+    [BsonId]
+    [BsonRepresentation(BsonType.ObjectId)]
+    public string? Id { get; set; }   // ✅ Use this as EventId
+    
     public string? Name { get; set; }
     public string? Description { get; set; }
     public DateTime Date { get; set; }

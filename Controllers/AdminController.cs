@@ -28,7 +28,7 @@ namespace TicketManagementSystemMongo.Controllers
             decimal totalRevenue = 0;
             foreach (var booking in bookings)
             {
-                var ticketType = _context.TicketTypes.Find(t => t.TicketTypeId == booking.TicketTypeId).FirstOrDefault();
+                var ticketType = _context.TicketTypes.Find(t => t.Id == booking.TicketTypeId).FirstOrDefault();
                 if (ticketType != null)
                 {
                     totalRevenue += ticketType.Price * booking.Quantity;

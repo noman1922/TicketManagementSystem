@@ -7,12 +7,12 @@ using Microsoft.IdentityModel.Tokens;
 using System.Security.Claims;
 using System.Text;
 using BCrypt.Net;
-
+using TicketManagementSystemMongo.Services;
 
 namespace TicketManagementSystemMongo.Controllers
 {
     [ApiController]
-    [Route("api/[controller]")]   // Base route: /api/users
+    [Route("api/[controller]")]
     public class UsersController : ControllerBase
     {
         private readonly MongoDbContext _context;
@@ -36,7 +36,7 @@ namespace TicketManagementSystemMongo.Controllers
         [HttpGet("{id}")]
         public IActionResult GetUser(string id)
         {
-            var user = _context.Users.Find(u => u.UserId == id).FirstOrDefault();
+            var user = _context.Users.Find(u => u.Id == id).FirstOrDefault();
             if (user == null) return NotFound();
             return Ok(user);
         }
@@ -45,27 +45,39 @@ namespace TicketManagementSystemMongo.Controllers
         [HttpDelete("{id}")]
         public IActionResult DeleteUser(string id)
         {
-            var result = _context.Users.DeleteOne(u => u.UserId == id);
+            var result = _context.Users.DeleteOne(u => u.Id == id);
             if (result.DeletedCount == 0) return NotFound();
             return NoContent();
         }
 
         // POST: /api/users/register
         [HttpPost("register")]
-        public IActionResult Register([FromBody] User user)
+        public IActionResult Register([FromBody] RegisterRequest request)
         {
-            user.UserId = Guid.NewGuid().ToString();
-            user.PasswordHash = BCrypt.Net.BCrypt.HashPassword(user.PasswordHash); // hash password
-            user.IsVerified = false;
+            // Check if email already exists
+            var existingUser = _context.Users.Find(u => u.Email == request.Email).FirstOrDefault();
+            if (existingUser != null)
+            {
+                return BadRequest("Email already registered.");
+            }
 
-            // generate 6-digit code
+            var user = new User
+            {
+                Name = request.Name,
+                Email = request.Email,
+                PasswordHash = BCrypt.Net.BCrypt.HashPassword(request.Password),
+                IsVerified = false
+            };
+
+            // Generate 6-digit code
             var code = new Random().Next(100000, 999999).ToString();
             user.VerificationCode = code;
 
             _context.Users.InsertOne(user);
 
-            // TODO: send email with code (SMTP/SendGrid)
-            // EmailService.Send(user.Email, "Your verification code is " + code);
+            // Send verification email
+            var emailService = new EmailService(_config);
+            emailService.SendVerificationEmail(user.Email, code);
 
             return Ok("Verification code sent to email.");
         }
@@ -80,7 +92,8 @@ namespace TicketManagementSystemMongo.Controllers
 
             user.IsVerified = true;
             user.VerificationCode = null;
-            _context.Users.ReplaceOne(u => u.UserId == user.UserId, user);
+            
+            _context.Users.ReplaceOne(u => u.Id == user.Id, user);
 
             return Ok("Account verified successfully.");
         }
@@ -92,12 +105,13 @@ namespace TicketManagementSystemMongo.Controllers
             var user = _context.Users.Find(u => u.Email == payload.Email).FirstOrDefault();
             if (user == null) return NotFound("User not found.");
             if (!user.IsVerified) return BadRequest("Account not verified.");
-            if (!BCrypt.Net.BCrypt.Verify(payload.Password, user.PasswordHash)) return BadRequest("Invalid password.");
+            if (!BCrypt.Net.BCrypt.Verify(payload.Password, user.PasswordHash)) 
+                return BadRequest("Invalid password.");
 
-            // ✅ Generate JWT token
+            // Generate JWT token
             var tokenHandler = new JwtSecurityTokenHandler();
             var keyString = _config["Jwt:Key"] 
-            ?? throw new InvalidOperationException("JWT Key not configured in appsettings.json");
+                ?? throw new InvalidOperationException("JWT Key not configured in appsettings.json");
 
             var key = Encoding.UTF8.GetBytes(keyString);
 
@@ -105,7 +119,7 @@ namespace TicketManagementSystemMongo.Controllers
             {
                 Subject = new ClaimsIdentity(new[]
                 {
-                    new Claim(ClaimTypes.NameIdentifier, user.UserId),
+                    new Claim(ClaimTypes.NameIdentifier, user.Id ?? string.Empty),  // ✅ Fixed null check
                     new Claim(ClaimTypes.Email, user.Email),
                     new Claim(ClaimTypes.Role, "User")
                 }),
@@ -121,16 +135,23 @@ namespace TicketManagementSystemMongo.Controllers
         }
     }
 
-    // ✅ DTOs for cleaner request handling
+    // DTOs
+    public class RegisterRequest
+    {
+        public string Name { get; set; } = string.Empty;
+        public string Email { get; set; } = string.Empty;
+        public string Password { get; set; } = string.Empty;
+    }
+
     public class VerifyRequest
     {
-        public string? Email { get; set; }
-        public string? Code { get; set; }
+        public string Email { get; set; } = string.Empty;
+        public string Code { get; set; } = string.Empty;
     }
 
     public class LoginRequest
     {
-        public string? Email { get; set; }
-        public string? Password { get; set; }
+        public string Email { get; set; } = string.Empty;
+        public string Password { get; set; } = string.Empty;
     }
 }

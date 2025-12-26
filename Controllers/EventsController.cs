@@ -24,31 +24,29 @@ namespace TicketManagementSystemMongo.Controllers
             return Ok(events);   // ✅ returns JSON
         }
 
-        // GET: /api/events/{id}
-        [HttpGet("{id}")]
-        public IActionResult GetEvent(string id)
-        {
-            var ev = _context.Events.Find(e => e.EventId == id).FirstOrDefault();
-            if (ev == null) return NotFound();
-            return Ok(ev);
-        }
+        // Change all EventId references to Id:
+[HttpGet("{id}")]
+public IActionResult GetEvent(string id)
+{
+    var ev = _context.Events.Find(e => e.Id == id).FirstOrDefault(); // Changed
+    if (ev == null) return NotFound();
+    return Ok(ev);
+}
 
-        // POST: /api/events
-        [HttpPost]
-        public IActionResult CreateEvent([FromBody] Event ev)
-        {
-            ev.EventId = Guid.NewGuid().ToString();   // generate GUID string
-            _context.Events.InsertOne(ev);
-            return CreatedAtAction(nameof(GetEvent), new { id = ev.EventId }, ev);
-        }
+[HttpPost]
+public IActionResult CreateEvent([FromBody] Event ev)
+{
+    // REMOVE: ev.EventId = Guid.NewGuid().ToString();
+    _context.Events.InsertOne(ev);
+    return CreatedAtAction(nameof(GetEvent), new { id = ev.Id }, ev); // Changed
+}
 
-        // DELETE: /api/events/{id}
-        [HttpDelete("{id}")]
-        public IActionResult DeleteEvent(string id)
-        {
-            var result = _context.Events.DeleteOne(e => e.EventId == id);
-            if (result.DeletedCount == 0) return NotFound();
-            return NoContent();
-        }
+[HttpDelete("{id}")]
+public IActionResult DeleteEvent(string id)
+{
+    var result = _context.Events.DeleteOne(e => e.Id == id); // Changed
+    if (result.DeletedCount == 0) return NotFound();
+    return NoContent();
+}
     }
 }
