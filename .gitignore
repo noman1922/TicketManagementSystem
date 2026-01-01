@@ -1,0 +1,27 @@
+# =========================
+# .NET (VERY IMPORTANT)
+# =========================
+bin/
+obj/
+*.user
+*.suo
+*.cache
+*.log
+
+# =========================
+# ASP.NET Core secrets
+# =========================
+appsettings.Development.json
+
+# =========================
+# React
+# =========================
+frontend/node_modules/
+frontend/build/
+frontend/.env
+
+# =========================
+# OS files
+# =========================
+.DS_Store
+Thumbs.db
