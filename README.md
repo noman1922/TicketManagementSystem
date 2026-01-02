@@ -1,173 +1,266 @@
-📅 TODAY'S WORK SUMMARY
-🎯 What We Accomplished Today:
-✅ Phase 1: Architecture Setup
-Converted MVC to API - Changed from server-rendered views to REST API
+🎟️ Ticket Management System
 
-Added MongoDB - Switched from SQL to NoSQL database
+ASP.NET Core Web API + MongoDB + Stripe + React
 
-Created API Controllers - Built endpoints for all entities
+A full-stack ticket booking and management system designed with a backend-first architecture, featuring secure authentication, event & ticket management, Stripe payment integration, and a React frontend.
 
-✅ Phase 2: Authentication System
-User Registration with email verification
+This project demonstrates real-world full-stack development practices, clean API design, database integration, and frontend–backend communication.
 
-6-digit verification codes sent to console
+📌 Project Overview
 
-JWT Token authentication for protected endpoints
+The Ticket Management System allows users to:
 
-Password hashing with BCrypt
+Register and verify accounts
 
-✅ Phase 3: Core Entities & Relationships
-User → Customers who book tickets
+Browse events
 
-Event → Concerts, shows, etc.
+Book tickets
 
-TicketType → VIP/General tickets with prices
+Initiate secure payments
 
-Booking → When users buy tickets
+Validate tickets via QR scan (backend-ready)
 
-QRScanLog → For scanning tickets at entry
+Manage data through admin endpoints
 
-✅ Phase 4: Fixed Critical Issues
-MongoDB connection - Fixed password & network issues
+The system is built using:
 
-ID standardization - Changed from {Model}Id to just Id
+Backend: ASP.NET Core Web API
 
-Fixed all controllers - Updated to use new ID system
+Database: MongoDB (Atlas)
 
-Fixed JSON issues - Removed comments causing errors
+Payments: Stripe (test mode)
 
-✅ Phase 5: Tested & Verified
-All endpoints working in Swagger
+Frontend: React
 
-Data persisting in MongoDB
+🏗️ Architecture Overview
+React Frontend
+      ↓ (HTTP / JSON)
+ASP.NET Core Web API
+      ↓
+MongoDB Atlas
+      ↓
+Stripe Payment Gateway
 
-Authentication flow working (Register → Verify → Login)
 
-📊 PROJECT SCHEMA
-Database Structure (MongoDB Collections):
-📦 TicketManagementDB
-├── 📄 Users
-│   ├── _id: ObjectId
-│   ├── name: string
-│   ├── email: string (unique)
-│   ├── passwordHash: string (hashed)
-│   ├── isVerified: boolean
-│   └── verificationCode: string
+RESTful API architecture
+
+JWT-based authentication
+
+Backend handles all business logic
+
+Frontend consumes APIs only (no direct DB access)
+
+📁 Complete Project Structure
+TicketManagementSystem/
 │
-├── 📄 Events
-│   ├── _id: ObjectId
-│   ├── name: string
-│   ├── description: string
-│   ├── date: DateTime
-│   └── venue: string
+├── backend/                         # ASP.NET Core Web API
+│   │
+│   ├── Controllers/
+│   │   ├── UsersController.cs
+│   │   ├── EventsController.cs
+│   │   ├── TicketTypesController.cs
+│   │   ├── BookingsController.cs
+│   │   ├── PaymentsController.cs
+│   │   ├── QRScanController.cs
+│   │   └── AdminController.cs
+│   │
+│   ├── Models/
+│   │   ├── User.cs
+│   │   ├── Event.cs
+│   │   ├── TicketType.cs
+│   │   ├── Booking.cs
+│   │   ├── Payment.cs
+│   │   ├── QRScanLog.cs
+│   │   └── DashboardViewModel.cs
+│   │
+│   ├── Models/Requests/
+│   │   ├── LoginRequest.cs
+│   │   ├── VerifyRequest.cs
+│   │   └── CreatePaymentIntentRequest.cs
+│   │
+│   ├── Data/
+│   │   └── MongoDbContext.cs
+│   │
+│   ├── Services/
+│   │   └── EmailService.cs          # Console-based for testing
+│   │
+│   ├── Properties/
+│   │   └── launchSettings.json
+│   │
+│   ├── Program.cs
+│   ├── appsettings.json             # NO secrets (safe for GitHub)
+│   ├── appsettings.Development.json # Local secrets (ignored)
+│   └── TicketManagementSystemMongo.csproj
 │
-├── 📄 TicketTypes
-│   ├── _id: ObjectId
-│   ├── eventId: string (ref: Events._id)
-│   ├── name: string
-│   ├── price: decimal
-│   └── availableQuantity: number
+├── frontend/                        # React Frontend
+│   │
+│   ├── public/
+│   │   └── index.html
+│   │
+│   ├── src/
+│   │   ├── api/
+│   │   │   └── api.js               # API connection layer
+│   │   │
+│   │   ├── components/
+│   │   │   └── Navbar.js
+│   │   │
+│   │   ├── pages/
+│   │   │   ├── Login.js
+│   │   │   ├── Register.js
+│   │   │   ├── Verify.js
+│   │   │   ├── Events.js
+│   │   │   └── BookTicket.js
+│   │   │
+│   │   ├── App.js
+│   │   └── index.js
+│   │
+│   ├── package.json
+│   └── README.md
 │
-├── 📄 Bookings
-│   ├── _id: ObjectId
-│   ├── userId: string (ref: Users._id)
-│   ├── eventId: string (ref: Events._id)
-│   ├── ticketTypeId: string (ref: TicketTypes._id)
-│   ├── quantity: number
-│   ├── bookingDate: DateTime
-│   └── totalAmount: decimal
-│
-└── 📄 QRScanLogs
-    ├── _id: ObjectId
-    ├── bookingId: string (ref: Bookings._id)
-    ├── scanTime: DateTime
-    ├── scannedBy: string
-    └── isValid: boolean
+├── .gitignore
+└── README.md                        # This file
 
-API Endpoints Structure:
-📁 API Endpoints
-├── 🔐 Authentication
-│   ├── POST /api/users/register
-│   ├── POST /api/users/verify
-│   └── POST /api/users/login
+🗄️ Database Collections (MongoDB)
+TicketManagementDB
 │
-├── 👤 Users
-│   ├── GET  /api/users
-│   ├── GET  /api/users/{id}
-│   └── DELETE /api/users/{id}
-│
-├── 🎫 Events
-│   ├── GET    /api/events
-│   ├── GET    /api/events/{id}
-│   ├── POST   /api/events
-│   └── DELETE /api/events/{id}
-│
-├── 🎟️ Ticket Types
-│   ├── GET    /api/tickettypes
-│   ├── GET    /api/tickettypes/{id}
-│   ├── POST   /api/tickettypes
-│   └── DELETE /api/tickettypes/{id}
-│
-├── 📅 Bookings
-│   ├── GET    /api/bookings
-│   ├── GET    /api/bookings/{id}
-│   ├── POST   /api/bookings
-│   └── DELETE /api/bookings/{id}
-│
-├── 📱 QR Scanning
-│   ├── POST /api/qrscan/scan
-│   ├── GET  /api/qrscan/logs
-│   └── GET  /api/qrscan/logs/{bookingId}
-│
-└── 📊 Admin
-    └── GET /api/admin/dashboard
+├── Users
+├── Events
+├── TicketTypes
+├── Bookings
+├── Payments
+└── QRScanLogs
 
-Technology Stack:
-Backend: ASP.NET Core 8.0 Web API
 
-Database: MongoDB (local/Atlas)
+Each collection is linked using IDs (manual references).
 
-Authentication: JWT Tokens
+🔐 Security Features
 
-Documentation: Swagger/OpenAPI
+Password hashing using BCrypt
 
-Architecture: REST API + MVC (legacy views)
+JWT authentication
 
-🔄 Business Flow:
-User Registration → Email Verification → Login → Browse Events → 
-Select Ticket Type → Make Booking → Get QR Code → 
-Scan at Entry (QRScan) → Access Granted
+Email verification (6-digit code)
 
-📁 Project Folder Structure:
-TicketManagementSystemMongo/
-├── 📂 Controllers/           # API Controllers
-│   ├── UsersController.cs
-│   ├── EventsController.cs
-│   ├── TicketTypesController.cs
-│   ├── BookingsController.cs
-│   ├── QRScanController.cs
-│   ├── AdminController.cs
-│   └── HomeController.cs    # Legacy MVC
-│
-├── 📂 Models/               # Data Models
-│   ├── User.cs
-│   ├── Event.cs
-│   ├── TicketType.cs
-│   ├── Booking.cs
-│   ├── QRScanLog.cs
-│   ├── DashboardViewModel.cs
-│   └── Requests/           # DTOs
-│       ├── LoginRequest.cs
-│       └── VerifyRequest.cs
-│
-├── 📂 Data/                # Database Context
-│   └── MongoDbContext.cs
-│
-├── 📂 Services/            # Business Logic
-│   └── EmailService.cs
-│
-├── 📂 Views/               # Legacy MVC Views
-├── 📂 wwwroot/             # Static Files
-├── Program.cs              # Main entry point
-├── appsettings.json        # Configuration
-└── TicketManagementSystemMongo.csproj
+Stripe secret keys never exposed
+
+Secrets stored only in appsettings.Development.json
+
+🔗 API Endpoints Summary
+Authentication
+POST /api/users/register
+POST /api/users/verify
+POST /api/users/login
+
+Events & Tickets
+GET  /api/events
+POST /api/events
+GET  /api/tickettypes
+POST /api/tickettypes
+
+Bookings & Payments
+POST /api/bookings
+POST /api/payments/create-intent
+POST /api/payments/webhook
+
+QR Validation & Admin
+POST /api/qrscan/scan
+GET  /api/admin/dashboard
+
+⚙️ How to Run the Project (Step-by-Step)
+✅ Prerequisites
+
+.NET SDK 8.0+
+
+Node.js (LTS)
+
+MongoDB Atlas account
+
+Stripe account (Test mode)
+
+Internet connection
+
+▶️ Backend Setup
+1️⃣ Navigate to backend
+cd backend
+
+2️⃣ Configure appsettings.Development.json
+{
+  "MongoDbSettings": {
+    "ConnectionString": "mongodb+srv://<username>:<password>@cluster.mongodb.net",
+    "DatabaseName": "TicketManagementDB"
+  },
+  "Stripe": {
+    "SecretKey": "sk_test_XXXX",
+    "PublishableKey": "pk_test_XXXX",
+    "WebhookSecret": "whsec_XXXX"
+  },
+  "Jwt": {
+    "Key": "YourJwtSecretKey",
+    "Issuer": "TicketManagementAPI"
+  }
+}
+
+
+⚠️ Never commit this file
+
+3️⃣ Run backend
+dotnet restore
+dotnet run
+
+
+Swagger will be available at:
+
+http://localhost:XXXX/swagger
+
+▶️ Frontend Setup
+1️⃣ Navigate to frontend
+cd frontend
+
+2️⃣ Install dependencies
+npm install
+
+3️⃣ Start React app
+npm start
+
+
+Frontend runs at:
+
+http://localhost:3000
+
+🧪 Stripe Testing Notes
+
+Backend-only PaymentIntent creation
+
+Webhooks verify payment success
+
+Card UI can be added later
+
+No card data stored on server
+
+🚀 Current Status
+
+✔ Backend complete
+✔ MongoDB connected
+✔ Stripe integrated
+✔ React frontend connected
+✔ GitHub secure (no secrets)
+
+🔮 Future Enhancements
+
+Stripe card UI
+
+QR image generation
+
+Role-based authorization
+
+Admin frontend dashboard
+
+Deployment (Vercel + Render)
+
+Email service (SMTP)
+
+👨‍💻 Author
+
+Md. Abdullah Al Noman Khan
+Computer Science & Engineering
+IUBAT – International University of Business Agriculture and Technology
