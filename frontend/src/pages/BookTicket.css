@@ -1,0 +1,44 @@
+.book-page {
+  max-width: 700px;
+  margin: 60px auto;
+  padding: 20px;
+}
+
+.book-page h2 {
+  font-size: 26px;
+  margin-bottom: 20px;
+}
+
+.ticket-card {
+  border: 1px solid #ddd;
+  padding: 16px;
+  border-radius: 10px;
+  margin-bottom: 16px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.ticket-card h3 {
+  margin: 0;
+}
+
+.ticket-card button {
+  padding: 10px 16px;
+  background: #2563eb;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.ticket-card button:hover {
+  background: #1e40af;
+}
+.booking-summary {
+  margin-top: 30px;
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  background: #f9f9f9;
+}   

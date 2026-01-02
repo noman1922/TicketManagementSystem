@@ -133,7 +133,17 @@ namespace TicketManagementSystemMongo.Controllers
             var token = tokenHandler.CreateToken(tokenDescriptor);
             var jwt = tokenHandler.WriteToken(token);
 
-            return Ok(new { Token = jwt, Message = "Login successful" });
+            return Ok(new
+{
+    Token = jwt,
+    User = new
+    {
+        user.Id,
+        user.Name,
+        user.Email
+    }
+});
+
         }
     }
 

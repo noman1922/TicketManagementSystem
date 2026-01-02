@@ -1,6 +1,7 @@
 import { useState } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import api from "../api/api";
+import "./Auth.css";
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -8,19 +9,37 @@ const Login = () => {
   const navigate = useNavigate();
   const location = useLocation();
 
-  const redirectTo = location.state?.redirect || "/";
+  const redirect = location.state?.redirect || "/";
 
   const handleLogin = async () => {
+  try {
     const res = await api.post("/users/login", { email, password });
+
     localStorage.setItem("token", res.data.token);
-    navigate(redirectTo);
-  };
+    localStorage.setItem("user", JSON.stringify(res.data.user));
+
+    // 🔔 notify navbar
+    window.dispatchEvent(new Event("auth-change"));
+
+    navigate(redirect);
+  } catch {
+    alert("Invalid login credentials");
+  }
+};
+
+
 
   return (
-    <div>
+    <div className="auth-page">
       <h2>Login</h2>
+
       <input placeholder="Email" onChange={e => setEmail(e.target.value)} />
-      <input placeholder="Password" type="password" onChange={e => setPassword(e.target.value)} />
+      <input
+        type="password"
+        placeholder="Password"
+        onChange={e => setPassword(e.target.value)}
+      />
+
       <button onClick={handleLogin}>Login</button>
     </div>
   );

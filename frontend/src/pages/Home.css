@@ -1,0 +1,127 @@
+/* HERO */
+.hero {
+  height: 70vh;
+  background: url("https://images.pexels.com/photos/1190297/pexels-photo-1190297.jpeg")
+    center / cover no-repeat;
+  position: relative;
+  z-index: 1;
+}
+
+
+.hero-overlay {
+  height: 100%;
+  background: rgba(15, 23, 42, 0.75);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  text-align: center;
+  padding: 0 20px;
+}
+
+.hero-overlay h1 {
+  font-size: 44px;
+  margin-bottom: 10px;
+}
+
+.hero-overlay p {
+  font-size: 18px;
+  margin-bottom: 24px;
+}
+
+.search-input {
+  width: 60%;
+  max-width: 500px;
+  padding: 14px 20px;
+  border-radius: 30px;
+  border: none;
+  font-size: 16px;
+  outline: none;
+}
+
+/* EVENTS */
+.events-section {
+  max-width: 1200px;
+  margin: 60px auto;
+  padding: 0 20px;
+}
+
+.events-section h2 {
+  font-size: 30px;
+  margin-bottom: 30px;
+}
+
+.events-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 24px;
+}
+
+.event-card {
+  background: white;
+  border-radius: 14px;
+  overflow: hidden;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+  transition: transform 0.3s ease;
+}
+
+.event-card:hover {
+  transform: translateY(-6px);
+}
+
+.event-image {
+  position: relative;
+}
+
+.event-image img {
+  width: 100%;
+  height: 180px;
+  object-fit: cover;
+}
+
+.event-date {
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  background: #2563eb;
+  color: white;
+  padding: 6px 10px;
+  border-radius: 6px;
+  font-size: 14px;
+}
+
+.event-content {
+  padding: 16px;
+}
+
+.event-content h3 {
+  font-size: 20px;
+  margin-bottom: 6px;
+}
+
+.venue {
+  font-size: 14px;
+  color: #475569;
+  margin-bottom: 6px;
+}
+
+.desc {
+  font-size: 14px;
+  color: #555;
+  margin-bottom: 14px;
+}
+
+.event-content button {
+  width: 100%;
+  padding: 10px;
+  background: #2563eb;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.event-content button:hover {
+  background: #1e40af;
+}

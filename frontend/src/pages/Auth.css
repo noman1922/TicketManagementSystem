@@ -1,0 +1,44 @@
+.auth-page {
+  max-width: 420px;
+  margin: 80px auto;
+  padding: 30px;
+  background: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+  text-align: center;
+}
+
+.auth-page h2 {
+  margin-bottom: 20px;
+  font-size: 26px;
+}
+
+.auth-page input {
+  width: 100%;
+  padding: 12px;
+  margin-bottom: 14px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  font-size: 15px;
+}
+
+.auth-page button {
+  width: 100%;
+  padding: 12px;
+  background: #2563eb;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.auth-page button:hover {
+  background: #1e40af;
+}
+.auth-page .toggle-link {
+  margin-top: 16px;
+  font-size: 14px;
+  color: #2563eb;
+  cursor: pointer;
+}

@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import api from "../api/api";
+import "./Event.css";
 
 const Event = () => {
   const { id } = useParams();
@@ -9,8 +10,8 @@ const Event = () => {
 
   useEffect(() => {
     api.get(`/events/${id}`)
-      .then((res) => setEvent(res.data))
-      .catch((err) => console.error(err));
+      .then(res => setEvent(res.data))
+      .catch(err => console.error(err));
   }, [id]);
 
   if (!event) return <p>Loading...</p>;
@@ -25,16 +26,22 @@ const Event = () => {
   };
 
   return (
-    <div>
-      <h2>{event.name}</h2>
-      <p>{event.description}</p>
-      <p><strong>Venue:</strong> {event.venue}</p>
-      <p>
-        <strong>Date:</strong>{" "}
-        {new Date(event.date).toLocaleString()}
-      </p>
+    <div className="event-page">
+      <img
+        className="event-banner"
+        src="https://images.pexels.com/photos/2747446/pexels-photo-2747446.jpeg"
+        alt="event"
+      />
 
-      <button onClick={handleBuy}>Buy Ticket</button>
+      <div className="event-content">
+        <h2>{event.name}</h2>
+        <p className="meta">
+          📍 {event.venue} | 📅 {new Date(event.date).toLocaleString()}
+        </p>
+        <p>{event.description}</p>
+
+        <button onClick={handleBuy}>Buy Ticket</button>
+      </div>
     </div>
   );
 };

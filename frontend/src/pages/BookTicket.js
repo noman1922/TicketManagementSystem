@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import api from "../api/api";
+import "./BookTicket.css";
 
 const BookTicket = () => {
   const { id } = useParams();
@@ -14,17 +15,21 @@ const BookTicket = () => {
     }
 
     api.get(`/tickettypes?eventId=${id}`)
-      .then(res => setTickets(res.data));
+      .then(res => setTickets(res.data))
+      .catch(() => setTickets([]));
   }, [id, navigate]);
 
   return (
-    <div>
+    <div className="book-page">
       <h2>Select Ticket</h2>
 
+      {tickets.length === 0 && <p>No ticket types available</p>}
+
       {tickets.map(t => (
-        <div key={t.id}>
-          <p>{t.name} — ${t.price}</p>
-          <button>Pay</button>
+        <div className="ticket-card" key={t.id}>
+          <h3>{t.name}</h3>
+          <p>Price: ${t.price}</p>
+          <button>Proceed to Payment</button>
         </div>
       ))}
     </div>

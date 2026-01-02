@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
-import api from "../api/api";
 import { useNavigate } from "react-router-dom";
+import api from "../api/api";
+import "./Dashboard.css";
 
 const Dashboard = () => {
   const [events, setEvents] = useState([]);
@@ -8,40 +9,36 @@ const Dashboard = () => {
 
   useEffect(() => {
     api.get("/events")
-      .then((res) => {
-        setEvents(res.data);
-      })
-      .catch((err) => console.error(err));
+      .then(res => setEvents(res.data))
+      .catch(err => console.error(err));
   }, []);
 
   return (
-    <div>
+    <div className="dashboard">
       <h2>All Events</h2>
 
-      {events.length === 0 && <p>No events available</p>}
+      <div className="events-grid">
+        {events.map(event => (
+          <div className="event-card" key={event.id}>
+            <img
+              src="https://images.pexels.com/photos/1763075/pexels-photo-1763075.jpeg"
+              alt="event"
+            />
 
-      {events.map((event) => (
-        <div
-          key={event.id}
-          style={{
-            border: "1px solid #ccc",
-            padding: "12px",
-            marginBottom: "12px",
-          }}
-        >
-          <h3>{event.name}</h3>
-          <p>{event.description}</p>
-          <p><strong>Venue:</strong> {event.venue}</p>
-          <p>
-            <strong>Date:</strong>{" "}
-            {new Date(event.date).toLocaleString()}
-          </p>
+            <div className="card-body">
+              <h3>{event.name}</h3>
+              <p>{event.venue}</p>
+              <p className="date">
+                {new Date(event.date).toLocaleString()}
+              </p>
 
-          <button onClick={() => navigate(`/events/${event.id}`)}>
-            View Details
-          </button>
-        </div>
-      ))}
+              <button onClick={() => navigate(`/events/${event.id}`)}>
+                View Details
+              </button>
+            </div>
+          </div>
+        ))}
+      </div>
     </div>
   );
 };
