@@ -1,22 +1,24 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+import Dashboard from "./pages/Dashboard";
+import Event from "./pages/Event";
+import BookTicket from "./pages/BookTicket";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import Verify from "./pages/Verify";
-import Events from "./pages/Events";
-import BookTicket from "./pages/BookTicket";
-import Navbar from "./components/Navbar";
 
-export default function App() {
+function App() {
   return (
     <BrowserRouter>
-      <Navbar />
       <Routes>
-        <Route path="/" element={<Login />} />
+        <Route path="/" element={<Dashboard />} />
+        <Route path="/events/:id" element={<Event />} />
+        <Route path="/book/:id" element={<BookTicket />} />
+        <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
         <Route path="/verify" element={<Verify />} />
-        <Route path="/events" element={<Events />} />
-        <Route path="/book/:eventId" element={<BookTicket />} />
       </Routes>
     </BrowserRouter>
   );
 }
+
+export default App;

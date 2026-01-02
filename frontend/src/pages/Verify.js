@@ -1,26 +1,23 @@
 import { useState } from "react";
-import { apiRequest } from "../api/api";
+import api from "../api/api";
 
-export default function Verify() {
+const Verify = () => {
   const [email, setEmail] = useState("");
   const [code, setCode] = useState("");
 
-  const submit = async () => {
-  try {
-    await apiRequest("/users/verify", "POST", { email, code });
-    alert("Verified! Now login.");
-  } catch (error) {
-    alert(error.message);
-  }
-};
-
+  const handleVerify = async () => {
+    await api.post("/users/verify", { email, code });
+    alert("Verified successfully");
+  };
 
   return (
     <div>
-      <h2>Verify Email</h2>
+      <h2>Verify Account</h2>
       <input placeholder="Email" onChange={e => setEmail(e.target.value)} />
-      <input placeholder="6-digit Code" onChange={e => setCode(e.target.value)} />
-      <button onClick={submit}>Verify</button>
+      <input placeholder="Code" onChange={e => setCode(e.target.value)} />
+      <button onClick={handleVerify}>Verify</button>
     </div>
   );
-}
+};
+
+export default Verify;

@@ -1,36 +1,34 @@
-import { useParams } from "react-router-dom";
-import { apiRequest } from "../api/api";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useParams, useNavigate } from "react-router-dom";
+import api from "../api/api";
 
-export default function BookTicket() {
-  const { eventId } = useParams();
-  const [quantity, setQuantity] = useState(1);
+const BookTicket = () => {
+  const { id } = useParams();
+  const navigate = useNavigate();
+  const [tickets, setTickets] = useState([]);
 
-  const book = async () => {
-    const token = localStorage.getItem("token");
+  useEffect(() => {
+    if (!localStorage.getItem("token")) {
+      navigate("/login");
+      return;
+    }
 
-    const booking = await apiRequest(
-      "/bookings",
-      "POST",
-      { eventId, quantity },
-      token
-    );
-
-    await apiRequest(
-      "/payments/create-intent",
-      "POST",
-      { bookingId: booking.id },
-      token
-    );
-
-    alert("Booking created. PaymentIntent started.");
-  };
+    api.get(`/tickettypes?eventId=${id}`)
+      .then(res => setTickets(res.data));
+  }, [id, navigate]);
 
   return (
     <div>
-      <h2>Book Ticket</h2>
-      <input type="number" value={quantity} onChange={e => setQuantity(e.target.value)} />
-      <button onClick={book}>Book & Pay</button>
+      <h2>Select Ticket</h2>
+
+      {tickets.map(t => (
+        <div key={t.id}>
+          <p>{t.name} — ${t.price}</p>
+          <button>Pay</button>
+        </div>
+      ))}
     </div>
   );
-}
+};
+
+export default BookTicket;

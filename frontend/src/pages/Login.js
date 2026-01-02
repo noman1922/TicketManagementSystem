@@ -1,27 +1,29 @@
 import { useState } from "react";
-import { apiRequest } from "../api/api";
+import { useLocation, useNavigate } from "react-router-dom";
+import api from "../api/api";
 
-export default function Login() {
+const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const navigate = useNavigate();
+  const location = useLocation();
 
-  const submit = async () => {
-  try {
-    const res = await apiRequest("/users/login", "POST", { email, password });
-    localStorage.setItem("token", res.token);
-    alert("Login successful");
-  } catch (error) {
-    alert(error.message);
-  }
-};
+  const redirectTo = location.state?.redirect || "/";
 
+  const handleLogin = async () => {
+    const res = await api.post("/users/login", { email, password });
+    localStorage.setItem("token", res.data.token);
+    navigate(redirectTo);
+  };
 
   return (
     <div>
       <h2>Login</h2>
       <input placeholder="Email" onChange={e => setEmail(e.target.value)} />
-      <input type="password" placeholder="Password" onChange={e => setPassword(e.target.value)} />
-      <button onClick={submit}>Login</button>
+      <input placeholder="Password" type="password" onChange={e => setPassword(e.target.value)} />
+      <button onClick={handleLogin}>Login</button>
     </div>
   );
-}
+};
+
+export default Login;
