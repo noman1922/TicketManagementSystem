@@ -8,6 +8,8 @@ using System.Security.Claims;
 using System.Text;
 using BCrypt.Net;
 using TicketManagementSystemMongo.Services;
+using TicketManagementSystemMongo.Models.Requests;
+
 
 namespace TicketManagementSystemMongo.Controllers
 {
