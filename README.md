@@ -1,128 +1,97 @@
-🎟️ Ticket Management System
+🎟️ Ticket Broker
 
-ASP.NET Core Web API + MongoDB + Stripe + React
+A Full-Stack Event Ticket Booking Platform
 
-A full-stack ticket booking and management system designed with a backend-first architecture, featuring secure authentication, event & ticket management, Stripe payment integration, and a React frontend.
+Ticket Broker is a full-stack web application for discovering events, booking tickets, and managing users with secure authentication.
+The system follows a backend-first architecture with a REST API and a modern React frontend.
 
-This project demonstrates real-world full-stack development practices, clean API design, database integration, and frontend–backend communication.
+🚀 Tech Stack
+Frontend
 
-📌 Project Overview
+React
 
-The Ticket Management System allows users to:
+React Router
 
-Register and verify accounts
+Axios
 
-Browse events
+CSS (custom, no UI framework)
 
-Book tickets
+Backend
 
-Initiate secure payments
+ASP.NET Core (Web API)
 
-Validate tickets via QR scan (backend-ready)
+MongoDB (Atlas)
 
-Manage data through admin endpoints
+JWT Authentication
 
-The system is built using:
+BCrypt password hashing
 
-Backend: ASP.NET Core Web API
+Stripe (test mode, backend-ready)
 
-Database: MongoDB (Atlas)
-
-Payments: Stripe (test mode)
-
-Frontend: React
-
-🏗️ Architecture Overview
+🧠 System Architecture
 React Frontend
-      ↓ (HTTP / JSON)
+   ↓ (HTTP / JSON)
 ASP.NET Core Web API
-      ↓
+   ↓
 MongoDB Atlas
-      ↓
+   ↓
 Stripe Payment Gateway
 
 
-RESTful API architecture
+Frontend never accesses the database directly
 
-JWT-based authentication
+Backend handles:
 
-Backend handles all business logic
+Authentication
 
-Frontend consumes APIs only (no direct DB access)
+Business logic
 
-📁 Complete Project Structure
-TicketManagementSystem/
+Data validation
+
+Payments
+
+📁 Project Structure (Root)
+TicketBroker/
+├── backend/
+├── frontend/
+└── README.md
+
+📦 Backend Structure (/backend)
+backend/
+├── Controllers/
+│   ├── UsersController.cs        # Register, Verify, Login, JWT
+│   ├── EventsController.cs       # Event listing & details
+│   ├── TicketTypesController.cs  # Ticket categories per event
+│   ├── BookingsController.cs     # Ticket booking logic
+│   ├── PaymentsController.cs     # Stripe PaymentIntent
+│   └── AdminController.cs        # Admin endpoints
 │
-├── backend/                         # ASP.NET Core Web API
-│   │
-│   ├── Controllers/
-│   │   ├── UsersController.cs
-│   │   ├── EventsController.cs
-│   │   ├── TicketTypesController.cs
-│   │   ├── BookingsController.cs
-│   │   ├── PaymentsController.cs
-│   │   ├── QRScanController.cs
-│   │   └── AdminController.cs
-│   │
-│   ├── Models/
-│   │   ├── User.cs
-│   │   ├── Event.cs
-│   │   ├── TicketType.cs
-│   │   ├── Booking.cs
-│   │   ├── Payment.cs
-│   │   ├── QRScanLog.cs
-│   │   └── DashboardViewModel.cs
-│   │
-│   ├── Models/Requests/
-│   │   ├── LoginRequest.cs
-│   │   ├── VerifyRequest.cs
-│   │   └── CreatePaymentIntentRequest.cs
-│   │
-│   ├── Data/
-│   │   └── MongoDbContext.cs
-│   │
-│   ├── Services/
-│   │   └── EmailService.cs          # Console-based for testing
-│   │
-│   ├── Properties/
-│   │   └── launchSettings.json
-│   │
-│   ├── Program.cs
-│   ├── appsettings.json             # NO secrets (safe for GitHub)
-│   ├── appsettings.Development.json # Local secrets (ignored)
-│   └── TicketManagementSystemMongo.csproj
+├── Models/
+│   ├── User.cs                   # User entity (MongoDB)
+│   ├── Event.cs                  # Event entity
+│   ├── TicketType.cs             # Ticket types
+│   ├── Booking.cs                # Booking records
+│   └── Payment.cs                # Payment records
 │
-├── frontend/                        # React Frontend
-│   │
-│   ├── public/
-│   │   └── index.html
-│   │
-│   ├── src/
-│   │   ├── api/
-│   │   │   └── api.js               # API connection layer
-│   │   │
-│   │   ├── components/
-│   │   │   └── Navbar.js
-│   │   │
-│   │   ├── pages/
-│   │   │   ├── Login.js
-│   │   │   ├── Register.js
-│   │   │   ├── Verify.js
-│   │   │   ├── Events.js
-│   │   │   └── BookTicket.js
-│   │   │
-│   │   ├── App.js
-│   │   └── index.js
-│   │
-│   ├── package.json
-│   └── README.md
+├── Models/Requests/
+│   ├── RegisterRequest.cs
+│   ├── LoginRequest.cs
+│   ├── VerifyRequest.cs
+│   └── CreatePaymentIntentRequest.cs
 │
-├── .gitignore
-└── README.md                        # This file
+├── Data/
+│   └── MongoDbContext.cs          # MongoDB connection & collections
+│
+├── Services/
+│   └── EmailService.cs            # Console-based email (dev mode)
+│
+├── Program.cs                     # App startup & middleware
+├── appsettings.json               # Safe config (no secrets)
+├── appsettings.Development.json   # Local secrets (gitignored)
+└── TicketManagementSystemMongo.csproj
 
-🗄️ Database Collections (MongoDB)
-TicketManagementDB
-│
+🗄️ MongoDB Collections
+TicketManagementDB/
 ├── Users
 ├── Events
 ├── TicketTypes
@@ -131,133 +100,150 @@ TicketManagementDB
 └── QRScanLogs
 
 
-Each collection is linked using IDs (manual references).
+MongoDB is schema-less
 
-🔐 Security Features
+Relationships handled using IDs
 
-Password hashing using BCrypt
+frontend/
+│
+├── public/
+│   ├── index.html
+│   └── favicon.ico
+│
+├── src/
+│   │
+│   ├── api/
+│   │   └── api.js                # Axios instance / API calls
+│   │
+│   ├── components/
+│   │   ├── Navbar.js
+│   │   ├── Navbar.css
+│   │   ├── Footer.js
+│   │   ├── Footer.css
+│   │   ├── EventCard.js          # Reusable event card (optional)
+│   │   └── EventCard.css
+│   │
+│   ├── pages/
+│   │   ├── Home.js               # Landing page (no login required)
+│   │   ├── Home.css
+│   │   ├── Events.js             # All events list
+│   │   ├── Events.css
+│   │   ├── EventDetails.js       # Single event details
+│   │   ├── EventDetails.css
+│   │   ├── BookTicket.js         # Booking + payment
+│   │   ├── BookTicket.css
+│   │   ├── Login.js
+│   │   ├── Register.js
+│   │   ├── Verify.js
+│   │   └── Auth.css              # Shared auth styles
+│   │
+│   ├── routes/
+│   │   └── ProtectedRoute.js     # JWT protected routes
+│   │
+│   ├── utils/
+│   │   ├── auth.js               # token helpers (get/set/remove)
+│   │   └── formatDate.js
+│   │
+│   ├── App.js                    # App layout & routes
+│   ├── index.js                  # React entry point
+│   ├── index.css                 # Global styles
+│   │
+│   └── assets/
+│       ├── images/
+│       │   └── logo.png
+│       └── icons/
+│
+├── .gitignore
+├── package.json
+├── package-lock.json
+└── README.md
 
-JWT authentication
 
-Email verification (6-digit code)
+🔐 Authentication Flow
 
-Stripe secret keys never exposed
+User registers (/register)
 
-Secrets stored only in appsettings.Development.json
+Backend:
 
-🔗 API Endpoints Summary
-Authentication
-POST /api/users/register
-POST /api/users/verify
-POST /api/users/login
+Hashes password
 
-Events & Tickets
-GET  /api/events
-POST /api/events
-GET  /api/tickettypes
-POST /api/tickettypes
+Generates verification code
 
-Bookings & Payments
-POST /api/bookings
-POST /api/payments/create-intent
-POST /api/payments/webhook
+Stores user in MongoDB
 
-QR Validation & Admin
-POST /api/qrscan/scan
-GET  /api/admin/dashboard
+Verification code shown in backend console (dev mode)
 
-⚙️ How to Run the Project (Step-by-Step)
-✅ Prerequisites
+User verifies account (/verify)
 
-.NET SDK 8.0+
+User logs in (/login)
 
-Node.js (LTS)
+Backend returns:
 
-MongoDB Atlas account
+JWT token
 
-Stripe account (Test mode)
+User info (name, email)
 
-Internet connection
+Frontend:
 
-▶️ Backend Setup
-1️⃣ Navigate to backend
+Stores token & user in localStorage
+
+Shows avatar + name in navbar
+
+Enables protected routes
+
+🧭 Page Flow
+Page	Route	Access
+Home	/	Public
+Events	/events	Public
+Event Details	/events/:id	Public
+Book Ticket	/book/:id	Login required
+Login	/login	Public
+Register	/register	Public
+Verify	/verify	Public
+▶️ How to Run the Project
+Backend
 cd backend
-
-2️⃣ Configure appsettings.Development.json
-{
-  "MongoDbSettings": {
-    "ConnectionString": "mongodb+srv://<username>:<password>@cluster.mongodb.net",
-    "DatabaseName": "TicketManagementDB"
-  },
-  "Stripe": {
-    "SecretKey": "sk_test_XXXX",
-    "PublishableKey": "pk_test_XXXX",
-    "WebhookSecret": "whsec_XXXX"
-  },
-  "Jwt": {
-    "Key": "YourJwtSecretKey",
-    "Issuer": "TicketManagementAPI"
-  }
-}
-
-
-⚠️ Never commit this file
-
-3️⃣ Run backend
 dotnet restore
 dotnet run
 
 
-Swagger will be available at:
+Swagger:
 
-http://localhost:XXXX/swagger
+http://localhost:5208/swagger
 
-▶️ Frontend Setup
-1️⃣ Navigate to frontend
+Frontend
 cd frontend
-
-2️⃣ Install dependencies
 npm install
-
-3️⃣ Start React app
 npm start
 
 
-Frontend runs at:
+Frontend:
 
 http://localhost:3000
 
-🧪 Stripe Testing Notes
+🧪 Development Notes
 
-Backend-only PaymentIntent creation
+Email verification uses console output (dev mode)
 
-Webhooks verify payment success
+Passwords are never stored in plain text
 
-Card UI can be added later
+JWT secures protected routes
 
-No card data stored on server
-
-🚀 Current Status
-
-✔ Backend complete
-✔ MongoDB connected
-✔ Stripe integrated
-✔ React frontend connected
-✔ GitHub secure (no secrets)
+MongoDB Atlas UI may show filters — API is source of truth
 
 🔮 Future Enhancements
 
+Real email (SMTP / SendGrid)
+
 Stripe card UI
 
-QR image generation
+QR code ticket scanning
+
+Admin dashboard UI
 
 Role-based authorization
 
-Admin frontend dashboard
-
 Deployment (Vercel + Render)
-
-Email service (SMTP)
 
 👨‍💻 Author
 
