@@ -2,69 +2,110 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import api from "../api/api";
 import "./Home.css";
+import Footer from "../components/Footer";
+
+
+/* ✅ IMAGE HELPER FUNCTION */
+const getEventImage = (eventName = "") => {
+  const name = eventName.toLowerCase();
+
+  if (name.includes("football") || name.includes("cricket")) {
+    return "https://images.pexels.com/photos/274506/pexels-photo-274506.jpeg";
+  }
+
+  if (name.includes("concert") || name.includes("rock")) {
+    return "https://images.pexels.com/photos/1190297/pexels-photo-1190297.jpeg";
+  }
+
+  if (name.includes("festival")) {
+    return "https://images.pexels.com/photos/1105666/pexels-photo-1105666.jpeg";
+  }
+
+  if (name.includes("tech")) {
+    return "https://images.pexels.com/photos/3184465/pexels-photo-3184465.jpeg";
+  }
+
+  // fallback image
+  return "https://images.pexels.com/photos/1763075/pexels-photo-1763075.jpeg";
+};
 
 const Home = () => {
-  const [events, setEvents] = useState([]);
-  const [search, setSearch] = useState("");
   const navigate = useNavigate();
+  const [events, setEvents] = useState([]);
 
   useEffect(() => {
     api.get("/events")
       .then(res => setEvents(res.data))
-      .catch(err => console.error(err));
+      .catch(() => setEvents([]));
   }, []);
 
-  const filtered = events.filter(e =>
-    e.name.toLowerCase().includes(search.toLowerCase())
-  );
-
   return (
-    <div className="home">
+    <div className="cinema-home">
       {/* HERO */}
-      <section className="hero">
-        <div className="hero-overlay">
-          <h1>Discover & Book Amazing Events</h1>
-          <p>Concerts • Festivals • Shows • Experiences</p>
+      <section className="cinema-hero">
+        <div className="hero-left">
+          <span className="hero-badge">Live events happening now</span>
 
-          <input
-            className="search-input"
-            placeholder="Search events..."
-            value={search}
-            onChange={e => setSearch(e.target.value)}
-          />
+          <h1>
+            BOOK TICKETS FOR THE <span>BIGGEST EVENTS</span>
+          </h1>
+
+          <p>
+            Sports, concerts, festivals and unforgettable live experiences —
+            all in one place.
+          </p>
+
+          <button onClick={() => navigate("/events")}>
+            Explore Events
+          </button>
+        </div>
+
+        <div className="hero-right">
+          <img src="https://images.pexels.com/photos/1190297/pexels-photo-1190297.jpeg" alt="" />
+          <img src="https://images.pexels.com/photos/2747446/pexels-photo-2747446.jpeg" alt="" />
+          <img src="https://images.pexels.com/photos/1105666/pexels-photo-1105666.jpeg" alt="" />
+          <img src="https://images.pexels.com/photos/976866/pexels-photo-976866.jpeg" alt="" />
         </div>
       </section>
 
+      {/* CATEGORIES */}
+      <section className="cinema-categories">
+        <div>🎵 Concerts</div>
+        <div>🏆 Sports</div>
+        <div>🎉 Festivals</div>
+        <div>🎭 Arts</div>
+      </section>
+
       {/* EVENTS */}
-      <section className="events-section">
-        <h2>Upcoming Events</h2>
+      <section className="cinema-events">
+        <div className="events-header">
+          <h2>Upcoming Events</h2>
+          <span onClick={() => navigate("/events")}>View all</span>
+        </div>
 
         <div className="events-grid">
-          {filtered.map(event => (
-            <div className="event-card" key={event.id}>
-              <div className="event-image">
-                <img
-                  src="https://images.pexels.com/photos/1105666/pexels-photo-1105666.jpeg"
-                  alt="event"
-                />
-                <span className="event-date">
-                  {new Date(event.date).toLocaleDateString()}
-                </span>
-              </div>
+          {events.slice(0, 4).map(event => (
+            <div
+              key={event.id}
+              className="cinema-card"
+              onClick={() => navigate(`/events/${event.id}`)}
+            >
+              {/* ✅ DYNAMIC IMAGE */}
+              <img
+                src={getEventImage(event.name)}
+                alt={event.name}
+              />
 
-              <div className="event-content">
+              <div className="card-info">
                 <h3>{event.name}</h3>
-                <p className="venue">{event.venue}</p>
-                <p className="desc">{event.description}</p>
-
-                <button onClick={() => navigate(`/events/${event.id}`)}>
-                  View Details
-                </button>
+                <p>{event.venue}</p>
+                <span>{new Date(event.date).toDateString()}</span>
               </div>
             </div>
           ))}
         </div>
       </section>
+      <Footer />
     </div>
   );
 };

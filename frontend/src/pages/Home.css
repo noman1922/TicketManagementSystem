@@ -1,127 +1,167 @@
-/* HERO */
-.hero {
-  height: 70vh;
-  background: url("https://images.pexels.com/photos/1190297/pexels-photo-1190297.jpeg")
-    center / cover no-repeat;
-  position: relative;
-  z-index: 1;
-}
-
-
-.hero-overlay {
-  height: 100%;
-  background: rgba(15, 23, 42, 0.75);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
+/* GLOBAL */
+.cinema-home {
+  background: radial-gradient(circle at top, #1b1f3b, #0b0f1a 60%);
   color: white;
-  text-align: center;
-  padding: 0 20px;
 }
 
-.hero-overlay h1 {
-  font-size: 44px;
-  margin-bottom: 10px;
+/* HERO */
+.cinema-hero {
+  min-height: 90vh;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 120px 6%;
+  gap: 80px;
 }
 
-.hero-overlay p {
+.hero-left {
+  max-width: 520px;
+}
+
+.hero-badge {
+  display: inline-block;
+  padding: 8px 14px;
+  background: rgba(139, 92, 246, 0.15);
+  color: #c4b5fd;
+  border-radius: 999px;
+  font-size: 12px;
+  margin-bottom: 20px;
+}
+
+.hero-left h1 {
+  font-size: 54px;
+  font-weight: 800;
+  line-height: 1.05;
+  margin-bottom: 20px;
+}
+
+.hero-left h1 span {
+  color: #8b5cf6;
+}
+
+.hero-left p {
   font-size: 18px;
-  margin-bottom: 24px;
+  color: #cbd5f5;
+  margin-bottom: 36px;
 }
 
-.search-input {
-  width: 60%;
-  max-width: 500px;
-  padding: 14px 20px;
-  border-radius: 30px;
+.hero-left button {
+  padding: 16px 34px;
+  background: #8b5cf6;
   border: none;
+  color: white;
+  border-radius: 999px;
   font-size: 16px;
-  outline: none;
+  cursor: pointer;
+}
+
+.hero-left button:hover {
+  background: #7c3aed;
+}
+
+/* HERO IMAGES */
+.hero-right {
+  display: flex;
+  gap: 14px;
+}
+
+.hero-right img {
+  width: 230px;
+  height: 520px;
+  object-fit: cover;
+  border-radius: 18px;
+  opacity: 0.9;
+}
+
+.hero-right img:nth-child(2),
+.hero-right img:nth-child(4) {
+  margin-top: 40px;
+}
+
+/* CATEGORIES */
+.cinema-categories {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20px;
+  padding: 60px 6%;
+}
+
+.cinema-categories div {
+  background: rgba(255, 255, 255, 0.04);
+  padding: 26px;
+  border-radius: 20px;
+  text-align: center;
+  font-size: 18px;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.cinema-categories div:hover {
+  background: rgba(139, 92, 246, 0.25);
 }
 
 /* EVENTS */
-.events-section {
-  max-width: 1200px;
-  margin: 60px auto;
-  padding: 0 20px;
+.cinema-events {
+  padding: 80px 6%;
 }
 
-.events-section h2 {
-  font-size: 30px;
-  margin-bottom: 30px;
+.events-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 36px;
+}
+
+.events-header h2 {
+  font-size: 32px;
+}
+
+.events-header span {
+  color: #8b5cf6;
+  cursor: pointer;
 }
 
 .events-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-  gap: 24px;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 26px;
 }
 
-.event-card {
-  background: white;
-  border-radius: 14px;
+.cinema-card {
+  background: #11162a;
+  border-radius: 18px;
   overflow: hidden;
-  box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+  cursor: pointer;
   transition: transform 0.3s ease;
 }
 
-.event-card:hover {
+.cinema-card:hover {
   transform: translateY(-6px);
 }
 
-.event-image {
-  position: relative;
-}
-
-.event-image img {
+.cinema-card img {
   width: 100%;
   height: 180px;
   object-fit: cover;
+  display: block;
 }
 
-.event-date {
-  position: absolute;
-  top: 12px;
-  left: 12px;
-  background: #2563eb;
-  color: white;
-  padding: 6px 10px;
-  border-radius: 6px;
-  font-size: 14px;
-}
-
-.event-content {
+.card-info {
   padding: 16px;
 }
 
-.event-content h3 {
-  font-size: 20px;
+.card-info h3 {
+  font-size: 18px;
   margin-bottom: 6px;
 }
 
-.venue {
+.card-info p {
   font-size: 14px;
-  color: #475569;
+  color: #94a3b8;
   margin-bottom: 6px;
 }
 
-.desc {
-  font-size: 14px;
-  color: #555;
-  margin-bottom: 14px;
-}
-
-.event-content button {
-  width: 100%;
-  padding: 10px;
-  background: #2563eb;
-  color: white;
-  border: none;
-  border-radius: 8px;
-  cursor: pointer;
-}
-
-.event-content button:hover {
-  background: #1e40af;
+.card-info span {
+  font-size: 13px;
+  color: #8b5cf6;
 }
