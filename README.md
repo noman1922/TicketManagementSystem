@@ -104,38 +104,60 @@ MongoDB is schema-less
 
 Relationships handled using IDs
 
-🎨 Frontend Structure (/frontend)
 frontend/
+│
 ├── public/
-│   └── index.html
+│   ├── index.html
+│   └── favicon.ico
 │
 ├── src/
+│   │
 │   ├── api/
-│   │   └── api.js                 # Axios base config + JWT
+│   │   └── api.js                # Axios instance / API calls
 │   │
 │   ├── components/
-│   │   ├── Navbar.js              # Top navigation + user dropdown
-│   │   └── Navbar.css
+│   │   ├── Navbar.js
+│   │   ├── Navbar.css
+│   │   ├── Footer.js
+│   │   ├── Footer.css
+│   │   ├── EventCard.js          # Reusable event card (optional)
+│   │   └── EventCard.css
 │   │
 │   ├── pages/
-│   │   ├── Home.js                # Landing page (public)
+│   │   ├── Home.js               # Landing page (no login required)
 │   │   ├── Home.css
-│   │   ├── Dashboard.js           # All events listing
-│   │   ├── Dashboard.css
-│   │   ├── Event.js               # Single event details
-│   │   ├── Event.css
-│   │   ├── BookTicket.js          # Ticket booking (protected)
+│   │   ├── Events.js             # All events list
+│   │   ├── Events.css
+│   │   ├── EventDetails.js       # Single event details
+│   │   ├── EventDetails.css
+│   │   ├── BookTicket.js         # Booking + payment
 │   │   ├── BookTicket.css
 │   │   ├── Login.js
 │   │   ├── Register.js
 │   │   ├── Verify.js
-│   │   └── Auth.css               # Shared auth styles
+│   │   └── Auth.css              # Shared auth styles
 │   │
-│   ├── App.js                     # Routing
-│   └── index.js
+│   ├── routes/
+│   │   └── ProtectedRoute.js     # JWT protected routes
+│   │
+│   ├── utils/
+│   │   ├── auth.js               # token helpers (get/set/remove)
+│   │   └── formatDate.js
+│   │
+│   ├── App.js                    # App layout & routes
+│   ├── index.js                  # React entry point
+│   ├── index.css                 # Global styles
+│   │
+│   └── assets/
+│       ├── images/
+│       │   └── logo.png
+│       └── icons/
 │
+├── .gitignore
 ├── package.json
-└── .gitignore
+├── package-lock.json
+└── README.md
+
 
 🔐 Authentication Flow
 
