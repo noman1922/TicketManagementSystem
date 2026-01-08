@@ -77,9 +77,23 @@
   top: 48px;
   background: white;
   border-radius: 8px;
-  box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
   overflow: hidden;
-  min-width: 120px;
+  min-width: 140px;
+}
+
+/* Dropdown Links */
+.dropdown-link {
+  display: block;
+  padding: 10px 16px;
+  color: #333 !important;
+  text-decoration: none;
+  font-size: 14px;
+  transition: background 0.2s;
+}
+
+.dropdown-link:hover {
+  background: #f1f5f9;
 }
 
 .dropdown button {
@@ -93,6 +107,7 @@
 .dropdown button:hover {
   background: #f1f5f9;
 }
+
 .navbar {
   position: sticky;
   top: 0;

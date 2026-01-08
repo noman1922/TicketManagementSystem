@@ -38,7 +38,7 @@ namespace TicketManagementSystemMongo.Controllers
             var options = new PaymentIntentCreateOptions
             {
                 Amount = (long)(req.Amount * 100),
-                Currency = "usd",
+                Currency = "bdt",
                 Metadata = new Dictionary<string, string>
                 {
                     { "bookingId", req.BookingId }
@@ -46,23 +46,34 @@ namespace TicketManagementSystemMongo.Controllers
             };
 
             var service = new PaymentIntentService();
-            var intent = service.Create(options);
-
-            var payment = new Payment
+            try
             {
-                BookingId = req.BookingId,
-                StripePaymentIntentId = intent.Id,
-                Amount = req.Amount,
-                Status = "pending",
-                CreatedAt = DateTime.UtcNow
-            };
+                var intent = service.Create(options);
+                
+                var payment = new Payment
+                {
+                    BookingId = req.BookingId,
+                    StripePaymentIntentId = intent.Id,
+                    Amount = req.Amount,
+                    Status = "pending",
+                    CreatedAt = DateTime.UtcNow
+                };
 
-            _context.Payments.InsertOne(payment);
+                _context.Payments.InsertOne(payment);
 
-            return Ok(new
+                return Ok(new
+                {
+                    clientSecret = intent.ClientSecret
+                });
+            }
+            catch (StripeException e)
             {
-                clientSecret = intent.ClientSecret
-            });
+                return BadRequest(new { error = e.StripeError.Message });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { error = ex.Message });
+            }
         }
 
         // 🔹 STRIPE WEBHOOK (NO AUTH)
@@ -94,6 +105,33 @@ namespace TicketManagementSystemMongo.Controllers
             }
 
             return Ok();
+        }
+        // 🔹 CONFIRM PAYMENT & SEND RECEIPT
+        [HttpPost("confirm-payment")]
+        public IActionResult ConfirmPayment([FromBody] ConfirmPaymentRequest req)
+        {
+            var booking = _context.Bookings.Find(b => b.Id == req.BookingId).FirstOrDefault();
+            if (booking == null) return NotFound("Booking not found");
+
+            // Update Booking Status
+            var update = Builders<Booking>.Update.Set(b => b.Status, "Confirmed");
+            _context.Bookings.UpdateOne(b => b.Id == req.BookingId, update);
+
+            // Fetch details for receipt
+            var eventDetails = _context.Events.Find(e => e.Id == booking.EventId).FirstOrDefault();
+            var ticketType = _context.TicketTypes.Find(t => t.Id == booking.TicketTypeId).FirstOrDefault();
+
+            // Send Email Receipt
+            var emailService = new TicketManagementSystemMongo.Services.EmailService(_configuration);
+            emailService.SendReceipt(booking, eventDetails, ticketType);
+
+            return Ok(new { message = "Payment confirmed and receipt sent" });
+        }
+
+        public class ConfirmPaymentRequest
+        {
+            public string BookingId { get; set; }
+            public string PaymentIntentId { get; set; }
         }
     }
 }

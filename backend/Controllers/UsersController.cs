@@ -104,9 +104,14 @@ namespace TicketManagementSystemMongo.Controllers
         [HttpPost("login")]
         public IActionResult Login([FromBody] LoginRequest payload)
         {
-            var user = _context.Users.Find(u => u.Email == payload.Email).FirstOrDefault();
+            // Allow login by Email OR Name
+            var user = _context.Users.Find(u => u.Email == payload.Email || u.Name == payload.Email).FirstOrDefault();
+
             if (user == null) return NotFound("User not found.");
-            if (!user.IsVerified) return BadRequest("Account not verified.");
+            
+            // Allow Admin to skip verification (or ensure seeded admin is verified)
+            if (user.Role != "Admin" && !user.IsVerified) return BadRequest("Account not verified.");
+            
             if (!BCrypt.Net.BCrypt.Verify(payload.Password, user.PasswordHash)) 
                 return BadRequest("Invalid password.");
 
@@ -123,7 +128,7 @@ namespace TicketManagementSystemMongo.Controllers
                 {
                     new Claim(ClaimTypes.NameIdentifier, user.Id ?? string.Empty),  // ✅ Fixed null check
                     new Claim(ClaimTypes.Email, user.Email),
-                    new Claim(ClaimTypes.Role, "User")
+                    new Claim(ClaimTypes.Role, user.Role) // ✅ Add Role
                 }),
                 Expires = DateTime.UtcNow.AddHours(2),
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature),
@@ -134,15 +139,16 @@ namespace TicketManagementSystemMongo.Controllers
             var jwt = tokenHandler.WriteToken(token);
 
             return Ok(new
-{
-    Token = jwt,
-    User = new
-    {
-        user.Id,
-        user.Name,
-        user.Email
-    }
-});
+            {
+                Token = jwt,
+                User = new
+                {
+                    user.Id,
+                    user.Name,
+                    user.Email,
+                    user.Role // ✅ Return Role
+                }
+            });
 
         }
     }

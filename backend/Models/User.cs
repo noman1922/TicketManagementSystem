@@ -20,5 +20,7 @@ namespace TicketManagementSystemMongo.Models
         public bool IsVerified { get; set; } = false;
 
         public string? VerificationCode { get; set; }
+
+        public string Role { get; set; } = "User";
     }
 }

@@ -41,6 +41,20 @@ public IActionResult CreateEvent([FromBody] Event ev)
     return CreatedAtAction(nameof(GetEvent), new { id = ev.Id }, ev); // Changed
 }
 
+
+[HttpPut("{id}")]
+public IActionResult UpdateEvent(string id, [FromBody] Event updatedEvent)
+{
+    var existingEvent = _context.Events.Find(e => e.Id == id).FirstOrDefault();
+    if (existingEvent == null) return NotFound();
+
+    updatedEvent.Id = id; // Ensure ID doesn't change
+    var result = _context.Events.ReplaceOne(e => e.Id == id, updatedEvent);
+    
+    if (result.ModifiedCount == 0) return NotFound();
+    return Ok(updatedEvent);
+}
+
 [HttpDelete("{id}")]
 public IActionResult DeleteEvent(string id)
 {

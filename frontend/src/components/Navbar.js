@@ -1,11 +1,12 @@
 import { Link, useNavigate } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import "./Navbar.css";
 
 const Navbar = () => {
   const navigate = useNavigate();
   const [user, setUser] = useState(null);
   const [open, setOpen] = useState(false);
+  const dropdownRef = useRef(null);
 
   // 🔁 Sync user state from localStorage
   useEffect(() => {
@@ -26,6 +27,23 @@ const Navbar = () => {
     };
   }, []);
 
+  // Close dropdown when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        setOpen(false);
+      }
+    };
+
+    if (open) {
+      document.addEventListener("mousedown", handleClickOutside);
+    }
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [open]);
+
   const logout = () => {
     localStorage.removeItem("token");
     localStorage.removeItem("user");
@@ -33,16 +51,19 @@ const Navbar = () => {
     // Notify navbar to update
     window.dispatchEvent(new Event("auth-change"));
 
+    setOpen(false); // Close dropdown
     navigate("/");
   };
+
+  const isAdmin = user?.role === "Admin";
 
   return (
     <header className="navbar">
       <div className="navbar-container">
-        <Link to="/" className="logo">🎟 Ticket Broker</Link>
+        <Link to={isAdmin ? "/admin" : "/"} className="logo">🎟 Ticket Broker</Link>
 
         <nav className="nav-links">
-          <Link to="/events">Events</Link>
+          {!isAdmin && <Link to="/events">Events</Link>}
 
           {!user && (
             <>
@@ -52,7 +73,7 @@ const Navbar = () => {
           )}
 
           {user && (
-            <div className="user-menu">
+            <div className="user-menu" ref={dropdownRef}>
               <div className="user-trigger" onClick={() => setOpen(!open)}>
                 <div className="avatar">
                   {user.name.charAt(0).toUpperCase()}
@@ -62,6 +83,11 @@ const Navbar = () => {
 
               {open && (
                 <div className="dropdown">
+                  {isAdmin ? (
+                    <Link to="/admin" className="dropdown-link" onClick={() => setOpen(false)}>Admin Dashboard</Link>
+                  ) : (
+                    <Link to="/profile" className="dropdown-link" onClick={() => setOpen(false)}>Profile</Link>
+                  )}
                   <button onClick={logout}>Logout</button>
                 </div>
               )}

@@ -87,14 +87,27 @@ using (var scope = app.Services.CreateScope())
 }
 */
 
-// ✅ Seed Data (COMMENT THIS OUT FOR NOW)
-/*
+// ✅ Seed Data
 using (var scope = app.Services.CreateScope())
 {
     var context = scope.ServiceProvider.GetRequiredService<MongoDbContext>();
-    // ... your seed code stays exactly the same
+    
+    // Seed Admin User
+    var admin = context.Users.Find(u => u.Name == "admin").FirstOrDefault();
+    if (admin == null)
+    {
+        var newAdmin = new User
+        {
+            Name = "admin",
+            Email = "admin@example.com",
+            PasswordHash = BCrypt.Net.BCrypt.HashPassword("admin123"), // Seeded password
+            IsVerified = true,
+            Role = "Admin"
+        };
+        context.Users.InsertOne(newAdmin);
+        Console.WriteLine("✅ Admin user seeded: admin / admin123");
+    }
 }
-*/
 
 // ✅ Swagger UI
 if (app.Environment.IsDevelopment())

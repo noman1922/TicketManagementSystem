@@ -88,7 +88,14 @@ const Home = () => {
             <div
               key={event.id}
               className="cinema-card"
-              onClick={() => navigate(`/events/${event.id}`)}
+              onClick={() => {
+                const token = localStorage.getItem("token");
+                if (token) {
+                  navigate(`/events/${event.id}`);
+                } else {
+                  navigate("/login", { state: { redirect: `/events/${event.id}` } });
+                }
+              }}
             >
               {/* ✅ DYNAMIC IMAGE */}
               <img

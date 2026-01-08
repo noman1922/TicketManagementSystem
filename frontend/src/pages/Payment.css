@@ -1,0 +1,93 @@
+.payment-page-container {
+    min-height: 80vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: #0f172a;
+    padding: 20px;
+}
+
+.payment-card-box {
+    background: white;
+    padding: 40px;
+    border-radius: 16px;
+    width: 100%;
+    max-width: 500px;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+}
+
+.payment-card-box h2 {
+    color: #1e293b;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.amount-display {
+    background: #f1f5f9;
+    padding: 15px;
+    border-radius: 8px;
+    text-align: center;
+    font-size: 1.2rem;
+    color: #475569;
+    margin-bottom: 30px;
+}
+
+.amount-display span {
+    font-weight: bold;
+    color: #2563eb;
+    font-size: 1.5rem;
+}
+
+.stripe-card-element {
+    border: 1px solid #e2e8f0;
+    padding: 15px;
+    border-radius: 8px;
+    background: #f8fafc;
+}
+
+.pay-now-btn {
+    width: 100%;
+    padding: 16px;
+    background: #2563eb;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 1.1rem;
+    font-weight: bold;
+    cursor: pointer;
+    margin-top: 30px;
+    transition: background 0.3s;
+}
+
+.pay-now-btn:hover:not(:disabled) {
+    background: #1d4ed8;
+}
+
+.pay-now-btn:disabled {
+    background: #94a3b8;
+    cursor: not-allowed;
+}
+
+/* Success View */
+.success-view .success-card {
+    text-align: center;
+    background: white;
+    padding: 50px;
+    border-radius: 16px;
+    color: #1e293b;
+}
+
+.success-card h1 {
+    color: #10b981;
+    margin-bottom: 20px;
+}
+
+.success-card button {
+    margin-top: 20px;
+    padding: 10px 20px;
+    background: #1e293b;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+}

@@ -1,46 +1,231 @@
+/* Event.css */
 .event-page {
-  max-width: 900px;
-  margin: 40px auto;
-  background: white;
-  border-radius: 14px;
-  overflow: hidden;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+  font-family: 'Inter', sans-serif;
+  color: #fff;
+  background-color: #0f172a;
+  min-height: 100vh;
+  position: relative;
+  overflow-x: hidden;
 }
 
-.event-banner {
+/* Hero Section */
+.hero-section {
+  position: relative;
+  height: 500px;
+  display: flex;
+  align-items: flex-end;
+  padding-bottom: 50px;
+}
+
+.hero-bg {
+  position: absolute;
+  top: 0;
+  left: 0;
   width: 100%;
-  height: 300px;
+  height: 100%;
   object-fit: cover;
+  z-index: 1;
+  mask-image: linear-gradient(to bottom, rgba(0, 0, 0, 1) 60%, rgba(0, 0, 0, 0));
 }
 
-.event-content {
-  padding: 24px;
+.hero-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(180deg, rgba(15, 23, 42, 0.3) 0%, rgba(15, 23, 42, 1) 100%);
+  z-index: 2;
 }
 
-.event-content h2 {
-  font-size: 28px;
-  margin-bottom: 10px;
+.hero-content {
+  position: relative;
+  z-index: 3;
+  max-width: 1200px;
+  margin: 0 auto;
+  width: 100%;
+  padding: 0 20px;
 }
 
-.event-content .meta {
-  color: #555;
-  margin-bottom: 16px;
+.hero-tags .tag {
+  background: rgba(255, 255, 255, 0.2);
+  padding: 5px 12px;
+  border-radius: 20px;
+  font-size: 0.9rem;
+  backdrop-filter: blur(5px);
+  margin-bottom: 15px;
+  display: inline-block;
 }
 
-.event-content button {
-  margin-top: 20px;
-  padding: 12px 24px;
-  background: #2563eb;
-  color: white;
+.event-title {
+  font-size: 3rem;
+  font-weight: 800;
+  margin: 10px 0;
+  text-shadow: 0 4px 6px rgba(0, 0, 0, 0.5);
+}
+
+.event-meta {
+  display: flex;
+  gap: 20px;
+  font-size: 1.1rem;
+  opacity: 0.9;
+}
+
+/* Main Content Layout */
+.main-content {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 40px 20px;
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 40px;
+  position: relative;
+  z-index: 3;
+}
+
+/* Countdown */
+.countdown-card {
+  background: rgba(30, 41, 59, 0.8);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 16px;
+  padding: 20px;
+  display: flex;
+  justify-content: space-around;
+  margin-bottom: 30px;
+  backdrop-filter: blur(10px);
+}
+
+.timer-box {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+}
+
+.timer-box .time {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #fbbf24;
+}
+
+.timer-box .label {
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  opacity: 0.7;
+}
+
+/* Tabs */
+.tabs {
+  display: flex;
+  gap: 15px;
+  background: rgba(30, 41, 59, 0.5);
+  padding: 8px;
+  border-radius: 12px;
+  margin-bottom: 30px;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(10px);
+}
+
+.tabs button {
+  background: transparent;
   border: none;
+  color: #94a3b8;
+  font-size: 1rem;
+  font-weight: 600;
+  padding: 10px 20px;
   border-radius: 8px;
-  font-size: 16px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  flex: 1;
+}
+
+.tabs button:hover {
+  color: #fff;
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.tabs button.active {
+  background: linear-gradient(135deg, #fbbf24 0%, #d97706 100%);
+  color: #0f172a;
+  box-shadow: 0 4px 12px rgba(251, 191, 36, 0.3);
+}
+
+/* Tab Content */
+.tab-content {
+  color: #cbd5e1;
+  line-height: 1.6;
+}
+
+.ticket-item {
+  background: rgba(30, 41, 59, 0.5);
+  padding: 20px;
+  border-radius: 16px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  overflow: hidden;
+}
+
+.ticket-item:hover {
+  transform: translateY(-2px);
+  background: rgba(30, 41, 59, 0.8);
+  border-color: rgba(251, 191, 36, 0.2);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+}
+
+.ticket-info h4 {
+  margin: 0 0 5px 0;
+  color: #fff;
+  font-size: 1.2rem;
+  font-weight: 700;
+}
+
+.ticket-info .price {
+  color: #fbbf24;
+  font-weight: 700;
+  font-size: 1.1rem;
+}
+
+.buy-btn {
+  background: linear-gradient(135deg, #fbbf24 0%, #d97706 100%);
+  color: #0f172a;
+  border: none;
+  padding: 12px 30px;
+  border-radius: 30px;
+  font-weight: 700;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.buy-btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 6px 15px rgba(251, 191, 36, 0.4);
+  filter: brightness(1.1);
+}
+
+.buy-btn:active {
+  transform: translateY(1px);
+}
+
+/* Event Status */
+.event-status {
+  background: #ef4444;
+  color: white;
   cursor: pointer;
 }
 
 .event-content button:hover {
   background: #1e40af;
 }
+
 .event-description {
   margin-top: 20px;
   line-height: 1.6;

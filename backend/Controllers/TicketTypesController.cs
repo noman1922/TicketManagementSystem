@@ -19,9 +19,15 @@ namespace TicketManagementSystemMongo.Controllers
 
         // GET: /api/tickettypes
         [HttpGet]
-        public IActionResult GetTicketTypes()
+        public IActionResult GetTicketTypes([FromQuery] string? eventId)
         {
-            var ticketTypes = _context.TicketTypes.Find(_ => true).ToList();
+            var filter = Builders<TicketType>.Filter.Empty;
+            if (!string.IsNullOrEmpty(eventId))
+            {
+                filter = Builders<TicketType>.Filter.Eq(t => t.EventId, eventId);
+            }
+
+            var ticketTypes = _context.TicketTypes.Find(filter).ToList();
             return Ok(ticketTypes);
         }
 

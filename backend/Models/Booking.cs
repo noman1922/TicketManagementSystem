@@ -13,6 +13,13 @@ namespace TicketManagementSystemMongo.Models
         public string UserId { get; set; } = string.Empty;    // Stores User's Id
         public string EventId { get; set; } = string.Empty;   // Stores Event's Id
         public string TicketTypeId { get; set; } = string.Empty; // Stores TicketType's Id
+        
+        // Customer Details
+        public string CustomerName { get; set; } = string.Empty;
+        public string CustomerPhone { get; set; } = string.Empty;
+        public string CustomerEmail { get; set; } = string.Empty;
+        public string Status { get; set; } = "Pending"; // Pending, Confirmed, Failed
+
         public int Quantity { get; set; }
         public DateTime BookingDate { get; set; }
         public decimal TotalAmount { get; set; }
