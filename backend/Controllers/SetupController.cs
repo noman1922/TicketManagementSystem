@@ -39,9 +39,7 @@ namespace TicketManagementSystemMongo.Controllers
                             Description = "An electrifying night of rock music.",
                             ImageUrl = "https://images.pexels.com/photos/1190297/pexels-photo-1190297.jpeg", 
                             Category = "Concerts",
-                            Organizer = "Rock Nation",
-                            FormattedDate = DateTime.UtcNow.AddDays(10).ToString("yyyy-MM-dd"),
-                            FormattedTime = "19:00"
+                            Organizer = "Rock Nation"
                         },
                         new Event {
                             Name = "Live Football Final",
@@ -50,9 +48,7 @@ namespace TicketManagementSystemMongo.Controllers
                             Description = "The biggest match of the year.",
                             ImageUrl = "https://images.pexels.com/photos/274506/pexels-photo-274506.jpeg",
                             Category = "Sports",
-                            Organizer = "Sports Federation",
-                            FormattedDate = DateTime.UtcNow.AddDays(5).ToString("yyyy-MM-dd"),
-                            FormattedTime = "16:00"
+                            Organizer = "Sports Federation"
                         }
                     };
                     _context.Events.InsertMany(sampleEvents);

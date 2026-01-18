@@ -20,5 +20,6 @@ namespace TicketManagementSystemMongo.Models
         public string? About { get; set; }
         public string? Policies { get; set; }
         public string? Organizer { get; set; } // Who is organizing the event
+        public string? Category { get; set; } // ✅ Added Category
     }
 }
