@@ -61,42 +61,47 @@ namespace TicketManagementSystemMongo.Services
 
         private void SendEmail(string toEmail, string subject, string body)
         {
-            try
-            {
-                var smtpServer = _configuration["EmailSettings:SmtpServer"] ?? "smtp.gmail.com";
-                var port = int.TryParse(_configuration["EmailSettings:Port"], out int p) ? p : 587;
-                var senderEmail = _configuration["EmailSettings:SenderEmail"] ?? "";
-                var senderPassword = _configuration["EmailSettings:SenderPassword"] ?? "";
+            // 1. Capture Config Values (Main Thread)
+            var smtpServer = _configuration["EmailSettings:SmtpServer"] ?? "smtp.gmail.com";
+            var port = int.TryParse(_configuration["EmailSettings:Port"], out int p) ? p : 587;
+            var senderEmail = _configuration["EmailSettings:SenderEmail"] ?? "";
+            var senderPassword = _configuration["EmailSettings:SenderPassword"] ?? "";
 
-                if (string.IsNullOrEmpty(senderEmail) || senderEmail.Contains("your-email"))
+            // 2. Run in Background (Fire-and-Forget)
+            Task.Run(() =>
+            {
+                try
                 {
-                    Console.WriteLine("⚠️ SMTP credentials not set. Email skipped.");
-                    return;
+                    if (string.IsNullOrEmpty(senderEmail) || senderEmail.Contains("your-email"))
+                    {
+                        Console.WriteLine("⚠️ SMTP credentials not set. Email skipped.");
+                        return;
+                    }
+
+                    var client = new SmtpClient(smtpServer, port)
+                    {
+                        Credentials = new NetworkCredential(senderEmail, senderPassword),
+                        EnableSsl = true
+                    };
+
+                    var mailMessage = new MailMessage
+                    {
+                        From = new MailAddress(senderEmail),
+                        Subject = subject,
+                        Body = body,
+                        IsBodyHtml = true
+                    };
+
+                    mailMessage.To.Add(toEmail);
+
+                    client.Send(mailMessage);
+                    Console.WriteLine($"✅ Email sent to {toEmail}");
                 }
-
-                var client = new SmtpClient(smtpServer, port)
+                catch (Exception ex)
                 {
-                    Credentials = new NetworkCredential(senderEmail, senderPassword),
-                    EnableSsl = true
-                };
-
-                var mailMessage = new MailMessage
-                {
-                    From = new MailAddress(senderEmail),
-                    Subject = subject,
-                    Body = body,
-                    IsBodyHtml = true
-                };
-
-                mailMessage.To.Add(toEmail);
-
-                client.Send(mailMessage);
-                Console.WriteLine($"✅ Email sent to {toEmail}");
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"❌ Failed to send email: {ex.Message}");
-            }
+                    Console.WriteLine($"❌ Failed to send email: {ex.Message}");
+                }
+            });
         }
     }
 }
