@@ -1,8 +1,8 @@
 /* DASHBOARD CONTAINER */
 .dashboard {
   min-height: 100vh;
-  background: radial-gradient(circle at top, #1b1f3b, #0b0f1a 60%);
-  color: white;
+  background: radial-gradient(circle at top, var(--bg-secondary), var(--bg-primary) 60%);
+  color: var(--text-primary);
   padding: 100px 6% 60px;
   /* Top padding for navbar space */
 }
@@ -38,12 +38,14 @@
 
 /* EVENT CARD */
 .event-card {
-  background: #11162a;
+  background: var(--bg-card);
   border-radius: 18px;
   overflow: hidden;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
   cursor: pointer;
-  border: 1px solid rgba(255, 255, 255, 0.05);
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow);
+  /* Ensure visibility */
 }
 
 .event-card:hover {
@@ -74,10 +76,11 @@
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  color: var(--text-primary);
 }
 
 .card-body p {
-  color: #94a3b8;
+  color: var(--text-secondary);
   font-size: 15px;
   margin-bottom: 6px;
 }

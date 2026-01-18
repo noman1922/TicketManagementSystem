@@ -18,7 +18,16 @@ const Profile = () => {
 
         // Fetch My Bookings
         api.get("/bookings/my-bookings")
-            .then(res => setBookings(res.data))
+            .then(res => {
+                // Sort by ID descending (newest first) to handle "TBA" dates gracefully
+                const sorted = [...res.data].sort((a, b) => {
+                    if (a.id && b.id) {
+                        return b.id.localeCompare(a.id);
+                    }
+                    return 0;
+                });
+                setBookings(sorted);
+            })
             .catch(err => console.error("Failed to fetch bookings:", err));
     }, []);
 

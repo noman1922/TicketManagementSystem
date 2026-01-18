@@ -32,12 +32,26 @@ const getEventImage = (eventName = "") => {
 const Home = () => {
   const navigate = useNavigate();
   const [events, setEvents] = useState([]);
+  const [selectedCategory, setSelectedCategory] = useState("All");
 
   useEffect(() => {
     api.get("/events")
       .then(res => setEvents(res.data))
       .catch(() => setEvents([]));
   }, []);
+
+  // Filter Logic
+  const filteredEvents = events.filter(event => {
+    if (selectedCategory === "All") return true;
+
+    const name = event.name.toLowerCase();
+    if (selectedCategory === "Concerts") return name.includes("concert") || name.includes("rock") || name.includes("music") || name.includes("live");
+    if (selectedCategory === "Sports") return name.includes("football") || name.includes("cricket") || name.includes("sport") || name.includes("match");
+    if (selectedCategory === "Festivals") return name.includes("festival") || name.includes("party") || name.includes("carnival");
+    if (selectedCategory === "Arts") return name.includes("art") || name.includes("theatre") || name.includes("drama") || name.includes("exhibition");
+
+    return false;
+  });
 
   return (
     <div className="cinema-home">
@@ -70,10 +84,19 @@ const Home = () => {
 
       {/* CATEGORIES */}
       <section className="cinema-categories">
-        <div className="stagger-item">🎵 Concerts</div>
-        <div className="stagger-item">🏆 Sports</div>
-        <div className="stagger-item">🎉 Festivals</div>
-        <div className="stagger-item">🎭 Arts</div>
+        {["All", "Concerts", "Sports", "Festivals", "Arts"].map((cat) => (
+          <div
+            key={cat}
+            className={`stagger-item ${selectedCategory === cat ? "active" : ""}`}
+            onClick={() => setSelectedCategory(cat)}
+          >
+            {cat === "All" ? "🔥 All" :
+              cat === "Concerts" ? "🎵 Concerts" :
+                cat === "Sports" ? "🏆 Sports" :
+                  cat === "Festivals" ? "🎉 Festivals" :
+                    "🎭 Arts"}
+          </div>
+        ))}
       </section>
 
       {/* EVENTS */}
@@ -84,7 +107,7 @@ const Home = () => {
         </div>
 
         <div className="events-grid">
-          {events.slice(0, 4).map((event, index) => (
+          {filteredEvents.map((event, index) => (
             <div
               key={event.id}
               className="cinema-card scale-in"
@@ -100,7 +123,7 @@ const Home = () => {
             >
               {/* ✅ DYNAMIC IMAGE */}
               <img
-                src={getEventImage(event.name)}
+                src={event.imageUrl ? `http://localhost:5208${event.imageUrl}` : getEventImage(event.name)}
                 alt={event.name}
               />
 

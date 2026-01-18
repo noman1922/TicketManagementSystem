@@ -1,0 +1,306 @@
+/* StaffDashboard.css */
+.staff-dashboard {
+    padding: 40px 6%;
+    min-height: 100vh;
+    background: var(--bg-primary);
+    color: var(--text-primary);
+}
+
+.dashboard-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 40px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid var(--border);
+}
+
+.dashboard-header h2 {
+    font-size: 32px;
+    color: var(--text-primary);
+    margin: 0;
+}
+
+.scanner-section {
+    max-width: 600px;
+    margin: 0 auto;
+    text-align: center;
+}
+
+.scanner-box {
+    background: black;
+    border-radius: 20px;
+    overflow: hidden;
+    margin-bottom: 30px;
+    border: 4px solid var(--border);
+    position: relative;
+    min-height: 400px;
+    /* Ensure space for scanner */
+}
+
+.manual-entry {
+    background: var(--bg-card);
+    padding: 30px;
+    border-radius: 16px;
+    box-shadow: var(--shadow);
+    border: 1px solid var(--border);
+}
+
+.manual-entry h3 {
+    margin-top: 0;
+    margin-bottom: 20px;
+    color: var(--text-primary);
+}
+
+.input-group {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.input-group input {
+    flex: 1;
+    padding: 14px;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    background: var(--input-bg);
+    color: var(--text-primary);
+    font-size: 16px;
+}
+
+.verify-btn {
+    padding: 14px 24px;
+    background: var(--accent);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+.verify-btn:hover {
+    background: var(--accent-hover);
+}
+
+/* Result Card */
+.result-card {
+    margin-top: 30px;
+    padding: 30px;
+    border-radius: 16px;
+    text-align: left;
+    animation: slideUp 0.3s ease-out;
+    background: var(--bg-card);
+    box-shadow: var(--shadow);
+}
+
+.result-card.success {
+    border-left: 6px solid #10b981;
+    background: rgba(16, 185, 129, 0.05);
+    /* Very subtle tint */
+}
+
+/* Dark mode override for tint */
+[data-theme='dark'] .result-card.success {
+    background: rgba(16, 185, 129, 0.1);
+}
+
+.result-card.error {
+    border-left: 6px solid #ef4444;
+    background: rgba(239, 68, 68, 0.05);
+}
+
+[data-theme='dark'] .result-card.error {
+    background: rgba(239, 68, 68, 0.1);
+}
+
+.status-badge {
+    display: inline-block;
+    padding: 6px 14px;
+    border-radius: 20px;
+    font-weight: 700;
+    font-size: 14px;
+    margin-bottom: 20px;
+}
+
+.status-badge.valid {
+    background: #d1fae5;
+    color: #065f46;
+}
+
+.status-badge.invalid {
+    background: #fee2e2;
+    color: #991b1b;
+}
+
+.ticket-details p {
+    margin: 10px 0;
+    font-size: 16px;
+    color: var(--text-secondary);
+    display: flex;
+    justify-content: space-between;
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 8px;
+}
+
+.ticket-details strong {
+    color: var(--text-primary);
+}
+
+.action-buttons {
+    margin-top: 24px;
+    display: flex;
+    gap: 14px;
+}
+
+.redeem-btn {
+    flex: 1;
+    padding: 12px;
+    border: none;
+    background: #ef4444;
+    color: white;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 600;
+}
+
+.close-btn-secondary {
+    flex: 1;
+    padding: 12px;
+    border: 1px solid var(--border);
+    background: transparent;
+    color: var(--text-secondary);
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+.close-btn-secondary:hover {
+    background: var(--bg-primary);
+    color: var(--text-primary);
+}
+
+@keyframes slideUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* New Classes for Inline Replacements */
+.scanner-layout {
+    grid-template-columns: 1fr;
+}
+
+.scanner-card {
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.scanner-actions {
+    margin-top: 20px;
+    display: flex;
+    gap: 10px;
+    flex-direction: column;
+}
+
+.scanner-wrapper {
+    background: #000;
+    padding: 10px;
+    border-radius: 8px;
+    position: relative;
+}
+
+#reader {
+    width: 100%;
+}
+
+.stop-btn {
+    margin-top: 10px;
+    width: 100%;
+    background: #dc3545;
+    color: #fff;
+}
+
+.start-scan-btn {
+    width: 100%;
+    padding: 15px;
+}
+
+.manual-divider {
+    text-align: center;
+    margin: 10px 0;
+    color: var(--text-secondary);
+}
+
+.manual-scan-form {
+    display: flex;
+    gap: 10px;
+}
+
+.manual-input {
+    flex: 1;
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid var(--border);
+    background: var(--input-bg);
+    color: var(--text-primary);
+}
+
+.error-msg {
+    margin-top: 20px;
+    padding: 15px;
+    background-color: rgba(254, 226, 226, 0.2);
+    /* light red transparent */
+    color: #ef4444;
+    /* red text */
+    border-radius: 5px;
+    border: 1px solid rgba(239, 68, 68, 0.2);
+}
+
+.success-msg {
+    margin-top: 20px;
+    padding: 15px;
+    background-color: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    box-shadow: var(--shadow);
+}
+
+.ticket-status-badge {
+    text-align: center;
+    margin-bottom: 15px;
+}
+
+.status-valid {
+    background: #dcfce7;
+    color: #166534;
+    padding: 5px 15px;
+    border-radius: 20px;
+    font-weight: bold;
+}
+
+.status-used {
+    background: #fee2e2;
+    color: #991b1b;
+    padding: 5px 15px;
+    border-radius: 20px;
+    font-weight: bold;
+}
+
+.ticket-id {
+    font-size: 0.8em;
+    color: var(--text-secondary);
+}
+
+.invalidate-btn {
+    width: 100%;
+    margin-top: 15px;
+    background: #dc2626;
+    border: none;
+    color: white;
+}

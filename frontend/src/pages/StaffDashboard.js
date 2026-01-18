@@ -1,7 +1,8 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import api from "../api/api";
-import "./Dashboard.css"; // Reusing Dashboard styles for now
+import { Html5QrcodeScanner } from "html5-qrcode";
+import "./StaffDashboard.css"; // Import the new CSS file
 
 const StaffDashboard = () => {
     const navigate = useNavigate();
@@ -123,45 +124,41 @@ const StaffDashboard = () => {
         <div className="dashboard-container fade-in">
             <div className="dashboard-header">
                 <h2>Staff Dashboard</h2>
-                <div className="header-actions">
-                    <span className="user-badge">Staff Panel</span>
-                    <button className="logout-btn" onClick={handleLogout}>Logout</button>
-                </div>
+
             </div>
 
-            <div className="dashboard-stats" style={{ gridTemplateColumns: '1fr' }}>
-                <div className="stat-card" style={{ maxWidth: '600px', margin: '0 auto' }}>
+            <div className="dashboard-stats scanner-layout">
+                <div className="stat-card scanner-card">
                     <h3>QR Ticket Scanner</h3>
 
-                    <div className="scanner-actions" style={{ marginTop: '20px', display: 'flex', gap: '10px', flexDirection: 'column' }}>
+                    <div className="scanner-actions">
 
                         {/* CAMERA SCANNER AREA */}
                         {isScanning ? (
-                            <div className="scanner-wrapper fade-in" style={{ background: '#000', padding: '10px', borderRadius: '8px', position: 'relative' }}>
-                                <div id="reader" style={{ width: '100%' }}></div>
+                            <div className="scanner-wrapper fade-in">
+                                <div id="reader"></div>
                                 <button
-                                    className="btn-secondary"
+                                    className="btn-secondary stop-btn"
                                     onClick={() => setIsScanning(false)}
-                                    style={{ marginTop: '10px', width: '100%', background: '#dc3545', color: '#fff' }}
                                 >
                                     ❌ Stop Camera
                                 </button>
                             </div>
                         ) : (
-                            <button className="btn-primary" onClick={() => setIsScanning(true)} style={{ width: '100%', padding: '15px' }}>
+                            <button className="btn-primary start-scan-btn" onClick={() => setIsScanning(true)}>
                                 📷 Scan with Camera
                             </button>
                         )}
 
-                        <div style={{ textAlign: 'center', margin: '10px 0' }}>or enter code manually</div>
+                        <div className="manual-divider">or enter code manually</div>
 
-                        <form onSubmit={handleManualScan} style={{ display: 'flex', gap: '10px' }}>
+                        <form onSubmit={handleManualScan} className="manual-scan-form">
                             <input
                                 type="text"
                                 value={bookingId}
                                 onChange={(e) => setBookingId(e.target.value)}
                                 placeholder="Enter Booking ID"
-                                style={{ flex: 1, padding: '10px', borderRadius: '5px', border: '1px solid #ccc' }}
+                                className="manual-input"
                             />
                             <button type="submit" className="btn-secondary" disabled={loading}>
                                 {loading ? "Verifying..." : "Check Ticket"}
@@ -171,36 +168,33 @@ const StaffDashboard = () => {
 
                     {/* Results Display */}
                     {error && (
-                        <div className="error-msg shake" style={{ marginTop: '20px', padding: '15px', backgroundColor: '#ffebee', color: '#c62828', borderRadius: '5px' }}>
+                        <div className="error-msg shake">
                             ❌ {error}
                         </div>
                     )}
 
                     {scanResult && (
-                        <div className="success-msg scale-in" style={{ marginTop: '20px', padding: '15px', backgroundColor: '#f8fafc', border: '1px solid #e2e8f0', borderRadius: '12px' }}>
-                            <div style={{ textAlign: 'center', marginBottom: '15px' }}>
-                                <span style={{
-                                    background: scanResult.booking?.status === 'Used' ? '#fee2e2' : '#dcfce7',
-                                    color: scanResult.booking?.status === 'Used' ? '#991b1b' : '#166534',
-                                    padding: '5px 15px', borderRadius: '20px', fontWeight: 'bold'
-                                }}>
+                        <div className="success-msg scale-in">
+                            <div className="ticket-status-badge">
+                                <span className={scanResult.booking?.status === 'Used' ? 'status-used' : 'status-valid'}>
                                     {scanResult.booking?.status === 'Used' ? '⚠️ ALREADY USED' : '✅ VALID TICKET'}
                                 </span>
                             </div>
 
-                            <p><strong>Event:</strong> {scanResult.booking?.eventName || "Event Details Loaded"}</p>
-                            <p><strong>Customer:</strong> {scanResult.booking?.customerName}</p>
-                            <p><strong>Ticket Type:</strong> {scanResult.booking?.ticketType || "Standard"}</p>
-                            <p><strong>Quantity:</strong> {scanResult.booking?.quantity}</p>
-                            <p style={{ fontSize: '0.8em', color: '#666' }}>ID: {scanResult.booking?.id}</p>
+                            <div className="ticket-details">
+                                <p><strong>Event:</strong> {scanResult.booking?.eventName || "Event Details Loaded"}</p>
+                                <p><strong>Customer:</strong> {scanResult.booking?.customerName}</p>
+                                <p><strong>Ticket Type:</strong> {scanResult.booking?.ticketType || "Standard"}</p>
+                                <p><strong>Quantity:</strong> {scanResult.booking?.quantity}</p>
+                                <p className="ticket-id">ID: {scanResult.booking?.id}</p>
+                            </div>
 
                             {/* VALIDATE ACTION */}
                             {scanResult.booking?.status !== 'Used' && (
                                 <button
-                                    className="btn-primary"
+                                    className="btn-primary invalidate-btn"
                                     onClick={validateTicket}
                                     disabled={loading}
-                                    style={{ width: '100%', marginTop: '15px', background: '#dc2626', border: 'none' }}
                                 >
                                     🔴 MAKE INVALID / REDEEM
                                 </button>

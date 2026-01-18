@@ -1,8 +1,8 @@
 /* Event.css */
 .event-page {
   font-family: 'Inter', sans-serif;
-  color: #fff;
-  background-color: #0f172a;
+  color: var(--text-primary);
+  background-color: var(--bg-primary);
   min-height: 100vh;
   position: relative;
   overflow-x: hidden;
@@ -55,20 +55,31 @@
   backdrop-filter: blur(5px);
   margin-bottom: 15px;
   display: inline-block;
+  color: white;
+  /* Ensure tag text is white */
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
 }
 
 .event-title {
   font-size: 3rem;
   font-weight: 800;
   margin: 10px 0;
-  text-shadow: 0 4px 6px rgba(0, 0, 0, 0.5);
+  text-shadow: 0 4px 6px rgba(0, 0, 0, 0.8), 0 1px 3px rgba(0, 0, 0, 0.8);
+  /* Strong shadow */
+  color: white;
+  /* Ensure title is white */
 }
 
 .event-meta {
   display: flex;
   gap: 20px;
   font-size: 1.1rem;
-  opacity: 0.9;
+  font-size: 1.1rem;
+  opacity: 1;
+  /* Remove opacity for better visibility */
+  color: white;
+  /* Ensure meta text is white */
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.8);
 }
 
 /* Main Content Layout */
@@ -85,8 +96,8 @@
 
 /* Countdown */
 .countdown-card {
-  background: rgba(30, 41, 59, 0.8);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: var(--bg-card);
+  border: 1px solid var(--border);
   border-radius: 16px;
   padding: 20px;
   display: flex;
@@ -104,7 +115,7 @@
 .timer-box .time {
   font-size: 2rem;
   font-weight: 700;
-  color: #fbbf24;
+  color: var(--accent);
 }
 
 .timer-box .label {
@@ -118,18 +129,19 @@
 .tabs {
   display: flex;
   gap: 15px;
-  background: rgba(30, 41, 59, 0.5);
+  background: var(--bg-card);
+  /* Was dark rgba */
   padding: 8px;
   border-radius: 12px;
   margin-bottom: 30px;
-  border: 1px solid rgba(255, 255, 255, 0.05);
-  backdrop-filter: blur(10px);
+  border: 1px solid var(--border);
 }
 
 .tabs button {
   background: transparent;
   border: none;
-  color: #94a3b8;
+  color: var(--text-secondary);
+  /* Was hardcoded light gray */
   font-size: 1rem;
   font-weight: 600;
   padding: 10px 20px;
@@ -140,8 +152,8 @@
 }
 
 .tabs button:hover {
-  color: #fff;
-  background: rgba(255, 255, 255, 0.05);
+  color: var(--text-primary);
+  background: var(--bg-card);
 }
 
 .tabs button.active {
@@ -152,34 +164,38 @@
 
 /* Tab Content */
 .tab-content {
-  color: #cbd5e1;
+  color: var(--text-secondary);
+  /* Was #cbd5e1 */
   line-height: 1.6;
 }
 
 .ticket-item {
-  background: rgba(30, 41, 59, 0.5);
+  background: var(--bg-card);
+  /* Was rgba(30, 41, 59, 0.5) */
   padding: 20px;
   border-radius: 16px;
   display: flex;
   justify-content: space-between;
   align-items: center;
   margin-bottom: 15px;
-  border: 1px solid rgba(255, 255, 255, 0.05);
+  border: 1px solid var(--border);
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   position: relative;
   overflow: hidden;
+  box-shadow: var(--shadow);
 }
 
 .ticket-item:hover {
   transform: translateY(-2px);
-  background: rgba(30, 41, 59, 0.8);
-  border-color: rgba(251, 191, 36, 0.2);
-  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+  background: var(--bg-primary);
+  /* subtle change */
+  border-color: var(--accent);
 }
 
 .ticket-info h4 {
   margin: 0 0 5px 0;
-  color: #fff;
+  color: var(--text-primary);
+  /* Was #fff */
   font-size: 1.2rem;
   font-weight: 700;
 }
@@ -229,5 +245,6 @@
 .event-description {
   margin-top: 20px;
   line-height: 1.6;
-  color: #444;
+  color: var(--text-secondary);
+  /* Was #444 */
 }

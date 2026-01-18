@@ -12,6 +12,7 @@ import Payment from "./pages/Payment";
 import AdminDashboard from "./pages/AdminDashboard";
 import StaffDashboard from "./pages/StaffDashboard"; // ✅ Import StaffDashboard
 import Profile from "./pages/Profile";
+import { Contact, FAQ, Terms, Privacy, Refund, Legals } from "./pages/FooterPages";
 import "./animations.css"; // Global animations
 
 function App() {
@@ -27,6 +28,14 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
         <Route path="/verify" element={<Verify />} />
+
+        {/* Footer Pages */}
+        <Route path="/contact" element={<Contact />} />
+        <Route path="/faq" element={<FAQ />} />
+        <Route path="/terms" element={<Terms />} />
+        <Route path="/privacy" element={<Privacy />} />
+        <Route path="/refund" element={<Refund />} />
+        <Route path="/legals" element={<Legals />} />
 
         {/* Protected Admin Route - Requires Admin Role */}
         <Route

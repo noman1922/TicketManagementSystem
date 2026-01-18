@@ -2,15 +2,17 @@
   max-width: 420px;
   margin: 80px auto;
   padding: 30px;
-  background: #ffffff;
+  background: var(--bg-card);
   border-radius: 12px;
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+  box-shadow: var(--shadow);
   text-align: center;
+  border: 1px solid var(--border);
 }
 
 .auth-page h2 {
   margin-bottom: 20px;
   font-size: 26px;
+  color: var(--text-primary);
 }
 
 .auth-page input {
@@ -18,8 +20,10 @@
   padding: 12px;
   margin-bottom: 14px;
   border-radius: 8px;
-  border: 1px solid #ccc;
+  border: 1px solid var(--border);
   font-size: 15px;
+  background: var(--input-bg);
+  color: var(--text-primary);
 }
 
 .auth-page button {
@@ -36,6 +40,7 @@
 .auth-page button:hover {
   background: #1e40af;
 }
+
 .auth-page .toggle-link {
   margin-top: 16px;
   font-size: 14px;

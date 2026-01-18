@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import "./Footer.css";
 
 const Footer = () => {
@@ -9,7 +10,7 @@ const Footer = () => {
           <h2>🎟 Ticket Broker</h2>
           <p>
             Ticket Broker is owned and operated by <br />
-            <strong>Adventor Global Limited</strong>
+            <strong>Broker and CO</strong>
           </p>
           <p className="license">
             TRADE LICENSE: TRAD/DNCC/141845/2022
@@ -30,12 +31,12 @@ const Footer = () => {
         <div className="footer-links">
           <h4>More Info</h4>
           <ul>
-            <li>Contact Us</li>
-            <li>FAQ</li>
-            <li>Legals</li>
-            <li>Terms & Conditions</li>
-            <li>Privacy Policy</li>
-            <li>Refund Policy</li>
+            <li><Link to="/contact">Contact Us</Link></li>
+            <li><Link to="/faq">FAQ</Link></li>
+            <li><Link to="/legals">Legals</Link></li>
+            <li><Link to="/terms">Terms & Conditions</Link></li>
+            <li><Link to="/privacy">Privacy Policy</Link></li>
+            <li><Link to="/refund">Refund Policy</Link></li>
           </ul>
         </div>
 

@@ -1,7 +1,6 @@
-/* GLOBAL */
 .cinema-home {
-  background: radial-gradient(circle at top, #1b1f3b, #0b0f1a 60%);
-  color: white;
+  background: radial-gradient(circle at top, var(--bg-secondary), var(--bg-primary) 60%);
+  color: var(--text-primary);
 }
 
 /* HERO */
@@ -12,6 +11,9 @@
   align-items: center;
   padding: 120px 6%;
   gap: 80px;
+  /* Ensure text is readable against gradient */
+  position: relative;
+  z-index: 1;
 }
 
 .hero-left {
@@ -22,7 +24,7 @@
   display: inline-block;
   padding: 8px 14px;
   background: rgba(139, 92, 246, 0.15);
-  color: #c4b5fd;
+  color: var(--accent);
   border-radius: 999px;
   font-size: 12px;
   margin-bottom: 20px;
@@ -41,7 +43,7 @@
 
 .hero-left p {
   font-size: 18px;
-  color: #cbd5f5;
+  color: var(--text-secondary);
   margin-bottom: 36px;
 }
 
@@ -66,8 +68,14 @@
 }
 
 .hero-right img {
-  width: 230px;
-  height: 520px;
+  width: 100%;
+  /* Flexible width */
+  max-width: 230px;
+  /* Cap width */
+  height: auto;
+  /* Maintain aspect ratio */
+  min-height: 400px;
+  /* Ensure height */
   object-fit: cover;
   border-radius: 18px;
   opacity: 0.9;
@@ -87,17 +95,29 @@
 }
 
 .cinema-categories div {
-  background: rgba(255, 255, 255, 0.04);
+  background: var(--bg-card);
   padding: 26px;
   border-radius: 20px;
   text-align: center;
+  border: 1px solid var(--border);
   font-size: 18px;
   cursor: pointer;
   transition: all 0.3s;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+  /* Added shadow for light mode visibility */
+  color: var(--text-primary);
 }
 
 .cinema-categories div:hover {
-  background: rgba(139, 92, 246, 0.25);
+  background: var(--bg-primary);
+  border-color: var(--accent);
+}
+
+.cinema-categories div.active {
+  background: #8b5cf6;
+  color: white;
+  transform: scale(1.05);
+  box-shadow: 0 4px 20px rgba(139, 92, 246, 0.4);
 }
 
 /* EVENTS */
@@ -128,11 +148,13 @@
 }
 
 .cinema-card {
-  background: #11162a;
+  background: var(--bg-card);
   border-radius: 18px;
   overflow: hidden;
   cursor: pointer;
-  transition: transform 0.3s ease;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow);
 }
 
 .cinema-card:hover {
@@ -153,15 +175,85 @@
 .card-info h3 {
   font-size: 18px;
   margin-bottom: 6px;
+  color: var(--text-primary);
 }
 
 .card-info p {
   font-size: 14px;
-  color: #94a3b8;
+  color: var(--text-secondary);
   margin-bottom: 6px;
 }
 
 .card-info span {
   font-size: 13px;
   color: #8b5cf6;
+}
+
+/* MOBILE RESPONSIVE HERO */
+@media (max-width: 1024px) {
+  .cinema-hero {
+    flex-direction: column;
+    padding: 80px 6%;
+    text-align: center;
+    gap: 50px;
+  }
+
+  .hero-left {
+    max-width: 80%;
+    margin: 0 auto;
+  }
+
+  /* Make images a 2x2 grid on tablets/mobile */
+  .hero-right {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 15px;
+    justify-items: center;
+    width: 100%;
+    max-width: 600px;
+    /* Limit grid width */
+    margin: 0 auto;
+  }
+
+  .hero-right img {
+    width: 100%;
+    height: 300px;
+    /* Shorter height for mobile */
+    min-height: auto;
+    margin-top: 0 !important;
+    /* Remove offset */
+  }
+}
+
+@media (max-width: 480px) {
+  .hero-left h1 {
+    font-size: 32px;
+  }
+
+  .hero-right img {
+    height: 200px;
+    /* Even smaller */
+  }
+}
+
+@media (max-width: 768px) {
+  .cinema-categories {
+    grid-template-columns: repeat(2, 1fr);
+    /* 2 columns on tablets */
+    gap: 16px;
+  }
+}
+
+@media (max-width: 480px) {
+  .cinema-categories {
+    grid-template-columns: 1fr;
+    /* stack 1 column on mobile */
+    gap: 12px;
+    padding: 40px 4%;
+  }
+
+  .cinema-categories div {
+    font-size: 16px;
+    padding: 20px;
+  }
 }

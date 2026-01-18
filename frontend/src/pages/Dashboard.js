@@ -45,7 +45,7 @@ const Dashboard = () => {
             onClick={() => handleViewDetails(event.id)}
           >
             <img
-              src={getEventImage(event.name)}
+              src={event.imageUrl ? `http://localhost:5208${event.imageUrl}` : getEventImage(event.name)}
               alt={event.name}
             />
 

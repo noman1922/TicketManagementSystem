@@ -81,7 +81,7 @@ const Event = () => {
       <div className="hero-section">
         <div className="hero-overlay"></div>
         <img
-          src={event.imageUrl ? `http://localhost:5000${event.imageUrl}` : "https://images.pexels.com/photos/2747446/pexels-photo-2747446.jpeg"}
+          src={event.imageUrl ? `http://localhost:5208${event.imageUrl}` : "https://images.pexels.com/photos/2747446/pexels-photo-2747446.jpeg"}
           alt={event.name}
           className="hero-bg"
           onError={(e) => { e.target.onerror = null; e.target.src = "https://images.pexels.com/photos/2747446/pexels-photo-2747446.jpeg"; }}

@@ -6,7 +6,18 @@ const Navbar = () => {
   const navigate = useNavigate();
   const [user, setUser] = useState(null);
   const [open, setOpen] = useState(false);
+  const [theme, setTheme] = useState(localStorage.getItem('theme') || 'light');
   const dropdownRef = useRef(null);
+
+  // 🌓 Theme Logic
+  useEffect(() => {
+    document.body.setAttribute('data-theme', theme);
+    localStorage.setItem('theme', theme);
+  }, [theme]);
+
+  const toggleTheme = () => {
+    setTheme(prev => prev === 'light' ? 'dark' : 'light');
+  };
 
   // 🔁 Sync user state from localStorage
   useEffect(() => {
@@ -64,6 +75,9 @@ const Navbar = () => {
         <Link to={isAdmin ? "/admin" : isStaff ? "/staff" : "/"} className="logo">🎟 Ticket Broker</Link>
 
         <nav className="nav-links">
+          <button className="theme-toggle" onClick={toggleTheme} aria-label="Toggle Theme">
+            {theme === 'light' ? '🌙' : '☀️'}
+          </button>
           {!isAdmin && !isStaff && <Link to="/events">Events</Link>}
 
           {!user && (

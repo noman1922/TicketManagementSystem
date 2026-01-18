@@ -171,15 +171,11 @@ const AdminDashboard = () => {
         try {
             if (editingEvent) {
                 // Update existing event
-                await api.put(`/events/${editingEvent.id}`, formData, {
-                    headers: { "Content-Type": "multipart/form-data" }
-                });
+                await api.put(`/events/${editingEvent.id}`, formData);
                 alert("✅ Event updated successfully!");
             } else {
                 // Create new event
-                await api.post("/events", formData, {
-                    headers: { "Content-Type": "multipart/form-data" }
-                });
+                await api.post("/events", formData);
                 alert("✅ Event created successfully!");
             }
             setShowEventModal(false);
@@ -246,25 +242,25 @@ const AdminDashboard = () => {
                         className={activeView === "dashboard" ? "active" : ""}
                         onClick={() => setActiveView("dashboard")}
                     >
-                        📊 Dashboard
+                        <span className="nav-icon">📊</span> <span className="nav-label">Dashboard</span>
                     </button>
                     <button
                         className={activeView === "events" ? "active" : ""}
                         onClick={() => setActiveView("events")}
                     >
-                        🎫 Events
+                        <span className="nav-icon">🎫</span> <span className="nav-label">Events</span>
                     </button>
                     <button
                         className={activeView === "users" ? "active" : ""}
                         onClick={() => setActiveView("users")}
                     >
-                        👥 Users
+                        <span className="nav-icon">👥</span> <span className="nav-label">Users</span>
                     </button>
                     <button
                         className={activeView === "bookings" ? "active" : ""}
                         onClick={() => setActiveView("bookings")}
                     >
-                        📋 Bookings
+                        <span className="nav-icon">📋</span> <span className="nav-label">Bookings</span>
                     </button>
 
                 </nav>
@@ -335,7 +331,7 @@ const AdminDashboard = () => {
                                         <tr key={event.id}>
                                             <td>
                                                 <img
-                                                    src={event.imageUrl || "/placeholder.png"}
+                                                    src={event.imageUrl ? `http://localhost:5208${event.imageUrl}` : "/placeholder.png"}
                                                     alt={event.name}
                                                     className="event-thumb"
                                                 />
