@@ -1,7 +1,12 @@
 import axios from "axios";
 
+// Use environment variable if available, otherwise default to local
+const baseURL = process.env.REACT_APP_API_URL
+  ? `${process.env.REACT_APP_API_URL}/api`
+  : "http://localhost:5208/api";
+
 const api = axios.create({
-  baseURL: "http://localhost:5208/api", // ⚠️ change port if needed
+  baseURL: baseURL,
 });
 
 // Automatically attach JWT token
