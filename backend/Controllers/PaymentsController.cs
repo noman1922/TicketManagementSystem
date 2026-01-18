@@ -35,6 +35,12 @@ namespace TicketManagementSystemMongo.Controllers
             if (req.Amount <= 0)
                 return BadRequest("Amount must be greater than zero");
 
+            var secretKey = _configuration["Stripe:SecretKey"];
+            if (string.IsNullOrWhiteSpace(secretKey) || secretKey.Contains("placeholder"))
+            {
+                return StatusCode(500, new { error = "Stripe SecretKey is not configured. Please add your sk_test_... key to appsettings.json" });
+            }
+
             var options = new PaymentIntentCreateOptions
             {
                 Amount = (long)(req.Amount * 100),
@@ -72,7 +78,7 @@ namespace TicketManagementSystemMongo.Controllers
             }
             catch (Exception ex)
             {
-                return StatusCode(500, new { error = ex.Message });
+                return StatusCode(500, new { error = "Internal Server Error: " + ex.Message });
             }
         }
 
@@ -96,12 +102,36 @@ namespace TicketManagementSystemMongo.Controllers
             {
                 var intent = (PaymentIntent)stripeEvent.Data.Object;
 
-                await _context.Payments.UpdateOneAsync(
+                // 1. Update Payment Status
+                var paymentUpdate = Builders<Payment>.Update.Set(p => p.Status, "succeeded");
+                var payment = await _context.Payments.FindOneAndUpdateAsync(
                     p => p.StripePaymentIntentId == intent.Id,
-                    Builders<Payment>.Update.Set(p => p.Status, "succeeded")
+                    paymentUpdate,
+                    new FindOneAndUpdateOptions<Payment> { ReturnDocument = ReturnDocument.After }
                 );
 
-                // TODO: update Booking status to "Confirmed"
+                if (payment != null)
+                {
+                    // 2. Update Booking Status
+                    var bookingUpdate = Builders<Booking>.Update.Set(b => b.Status, "Confirmed");
+                    var booking = await _context.Bookings.FindOneAndUpdateAsync(
+                        b => b.Id == payment.BookingId,
+                        bookingUpdate,
+                        new FindOneAndUpdateOptions<Booking> { ReturnDocument = ReturnDocument.After }
+                    );
+
+                    if (booking != null)
+                    {
+                        Console.WriteLine($"✅ Booking {booking.Id} Confirmed!");
+
+                        // 3. Send Email Receipt
+                        var eventDetails = _context.Events.Find(e => e.Id == booking.EventId).FirstOrDefault();
+                        var ticketType = _context.TicketTypes.Find(t => t.Id == booking.TicketTypeId).FirstOrDefault();
+
+                        var emailService = new TicketManagementSystemMongo.Services.EmailService(_configuration);
+                        emailService.SendReceipt(booking, eventDetails, ticketType);
+                    }
+                }
             }
 
             return Ok();
@@ -130,8 +160,8 @@ namespace TicketManagementSystemMongo.Controllers
 
         public class ConfirmPaymentRequest
         {
-            public string BookingId { get; set; }
-            public string PaymentIntentId { get; set; }
+            public string? BookingId { get; set; }
+            public string? PaymentIntentId { get; set; }
         }
     }
 }

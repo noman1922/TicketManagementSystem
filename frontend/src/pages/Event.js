@@ -30,6 +30,7 @@ const Event = () => {
     api.get(`/tickettypes?eventId=${id}`)
       .then(res => {
         console.log("Tickets received:", res.data);
+        console.log("First ticket object:", res.data[0]); // Log first ticket to see structure
         setTicketTypes(res.data);
       })
       .catch(err => {
@@ -80,9 +81,10 @@ const Event = () => {
       <div className="hero-section">
         <div className="hero-overlay"></div>
         <img
-          src="https://images.pexels.com/photos/2747446/pexels-photo-2747446.jpeg"
-          alt="Event Banner"
+          src={event.imageUrl ? `http://localhost:5000${event.imageUrl}` : "https://images.pexels.com/photos/2747446/pexels-photo-2747446.jpeg"}
+          alt={event.name}
           className="hero-bg"
+          onError={(e) => { e.target.onerror = null; e.target.src = "https://images.pexels.com/photos/2747446/pexels-photo-2747446.jpeg"; }}
         />
         <div className="hero-content">
           <div className="hero-tags">
@@ -150,17 +152,32 @@ const Event = () => {
                   <p className="no-tickets">No ticket types available</p>
                 ) : (
                   <div className="ticket-list">
-                    {ticketTypes.map(t => (
-                      <div key={t.id} className="ticket-item">
-                        <div className="ticket-info">
-                          <h4>{t.name}</h4>
-                          <span className="price">৳ {t.price}</span>
+                    {ticketTypes.map(t => {
+                      const name = t.name || t.Name || 'Unnamed Category';
+                      const price = t.price || t.Price || 0;
+                      const available = t.availableQuantity !== undefined ? t.availableQuantity : (t.AvailableQuantity || 0);
+                      const ticketId = t.id || t.Id;
+
+                      return (
+                        <div key={ticketId} className="ticket-item">
+                          <div className="ticket-info">
+                            <h4>{name}</h4>
+                            <span className="price">৳ {price}</span>
+                            <span style={{ fontSize: '12px', color: '#666', display: 'block' }}>
+                              {available > 0 ? `${available} seats left` : "SOLD OUT"}
+                            </span>
+                          </div>
+                          <button
+                            className="buy-btn"
+                            onClick={() => handleBuy(t)}
+                            disabled={available <= 0}
+                            style={available <= 0 ? { background: '#ccc', cursor: 'not-allowed' } : {}}
+                          >
+                            {available > 0 ? "BUY" : "SOLD OUT"}
+                          </button>
                         </div>
-                        <button className="buy-btn" onClick={() => handleBuy(t)}>
-                          BUY
-                        </button>
-                      </div>
-                    ))}
+                      );
+                    })}
                   </div>
                 )}
               </div>
@@ -169,26 +186,14 @@ const Event = () => {
             {activeTab === "about" && (
               <div className="about-section">
                 <h3>About The Event</h3>
-                <p>{event.description}</p>
-                <p>
-                  Arka Fashion Week Winter'25 is happening at Aloki, Tejgaon from December 5 - 7, 2025.
-                  Step into the world of fashion, creativity, and culture at this 3-day event.
-                </p>
-                <ul>
-                  <li>Fashion Shows</li>
-                  <li>Masterclasses</li>
-                  <li>Concerts</li>
-                  <li>Marketplace</li>
-                </ul>
+                <p style={{ whiteSpace: 'pre-line' }}>{event.about || event.description || "No details provided."}</p>
               </div>
             )}
 
             {activeTab === "policies" && (
               <div className="policies-section">
                 <h3>Event Policies</h3>
-                <p><strong>Entry & Conduct:</strong> Gates will open at 11:00 AM.</p>
-                <p><strong>Prohibited Items:</strong> No outside food, beverages, or large bags.</p>
-                <p><strong>Security:</strong> All attendees are subject to search.</p>
+                <p style={{ whiteSpace: 'pre-line' }}>{event.policies || "No specific policies listed."}</p>
               </div>
             )}
           </div>
@@ -198,15 +203,28 @@ const Event = () => {
           {/* Organizer Info / Map Placeholder */}
           <div className="organizer-card">
             <h3>Organized by</h3>
-            <p className="organizer-name">Arka Fashion Week</p>
-            <button className="contact-btn">Contact</button>
+            <p className="organizer-name">{event.organizer || "Organizer"}  </p>
+
           </div>
 
           <div className="map-card">
             <h3>Location</h3>
             <p>{event.venue}</p>
-            <div className="map-placeholder">Map View</div>
+
+            <div className="map-container">
+              <iframe
+                title="Event Location"
+                width="100%"
+                height="250"
+                style={{ border: 0, borderRadius: "8px" }}
+                loading="lazy"
+                allowFullScreen
+                referrerPolicy="no-referrer-when-downgrade"
+                src={`https://www.google.com/maps?q=${encodeURIComponent(event.venue)}&output=embed`}
+              />
+            </div>
           </div>
+
         </div>
       </div>
     </div>

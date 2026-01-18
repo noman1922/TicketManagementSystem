@@ -27,7 +27,7 @@ const Register = () => {
       });
 
       alert("Registration successful. Please verify your account.");
-      navigate("/verify");
+      navigate("/verify", { state: { email: email } });
     } catch (error) {
       console.error(error);
       alert("Registration failed. Email may already exist.");
@@ -37,7 +37,7 @@ const Register = () => {
   };
 
   return (
-    <div className="auth-page">
+    <div className="auth-page fade-in">
       <h2>Create Account</h2>
 
       <input
@@ -61,7 +61,7 @@ const Register = () => {
         onChange={(e) => setPassword(e.target.value)}
       />
 
-      <button onClick={handleRegister} disabled={loading}>
+      <button onClick={handleRegister} disabled={loading} className="btn-animate">
         {loading ? "Creating account..." : "Register"}
       </button>
     </div>

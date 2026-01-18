@@ -17,7 +17,34 @@ namespace TicketManagementSystemMongo.Controllers
             _context = context;
         }
         
-        // POST: /api/qrscan/scan
+        // POST: /api/qrscan/check (VIEW ONLY)
+        [HttpPost("check")]
+        public IActionResult CheckQR([FromBody] ScanRequest request)
+        {
+            var bookingId = request?.BookingId?.Trim();
+            Console.WriteLine($"[CheckQR] Received: '{bookingId}'");
+
+            if (string.IsNullOrEmpty(bookingId))
+                return BadRequest("Booking ID is required.");
+
+            // 1. Find Booking
+            var booking = _context.Bookings.Find(b => b.Id == bookingId).FirstOrDefault();
+            
+            if (booking == null)
+            {
+                Console.WriteLine($"[CheckQR] Booking not found for ID: '{bookingId}'");
+                return NotFound("Invalid ticket ID (Not found in DB).");
+            }
+
+            // 2. Return Booking Info (No modification)
+            return Ok(new 
+            { 
+                Success = true, 
+                Booking = booking 
+            });
+        }
+
+        // POST: /api/qrscan/scan (VALIDATE/REDEEM)
         [HttpPost("scan")]
         public IActionResult ScanQR([FromBody] ScanRequest request)
         {
@@ -41,12 +68,12 @@ namespace TicketManagementSystemMongo.Controllers
                 return BadRequest("Invalid booking ID.");
             }
             
-            // 2. Check if already scanned
+            // 2. Check if already scanned OR Status is "Used"
             var existingScan = _context.QRScanLogs
                 .Find(s => s.BookingId == request.BookingId && s.IsValid)
                 .FirstOrDefault();
             
-            if (existingScan != null)
+            if (existingScan != null || booking.Status == "Used")
             {
                 // Log duplicate scan attempt
                 var duplicateLog = new QRScanLog
@@ -57,10 +84,10 @@ namespace TicketManagementSystemMongo.Controllers
                     IsValid = false
                 };
                 _context.QRScanLogs.InsertOne(duplicateLog);
-                return BadRequest("Ticket already scanned.");
+                return BadRequest("Ticket already scanned / Used.");
             }
             
-            // 3. Log successful scan
+            // 3. Log successful scan AND Update Booking Status
             var scanLog = new QRScanLog
             {
                 BookingId = request.BookingId ?? string.Empty,
@@ -69,6 +96,10 @@ namespace TicketManagementSystemMongo.Controllers
                 IsValid = true
             };
             _context.QRScanLogs.InsertOne(scanLog);
+
+            // ✅ UPDATE STATUS TO "USED"
+            var update = Builders<Booking>.Update.Set(b => b.Status, "Used");
+            _context.Bookings.UpdateOne(b => b.Id == request.BookingId, update);
             
             return Ok(new 
             { 

@@ -50,7 +50,7 @@ namespace TicketManagementSystemMongo.Controllers
         [HttpGet("users")]
         public IActionResult GetAllUsers()
         {
-            var users = _context.Users.Find(_ => true).ToList();
+            var users = _context.Users.Find(_ => true).SortByDescending(u => u.Id).ToList();
             var userList = users.Select(u => new
             {
                 u.Id,
@@ -67,7 +67,7 @@ namespace TicketManagementSystemMongo.Controllers
         [HttpGet("all-bookings")]
         public IActionResult GetAllBookings()
         {
-            var bookings = _context.Bookings.Find(_ => true).ToList();
+            var bookings = _context.Bookings.Find(_ => true).SortByDescending(b => b.BookingDate).ToList();
             
             var enrichedBookings = bookings.Select(b =>
             {
@@ -90,6 +90,42 @@ namespace TicketManagementSystemMongo.Controllers
             });
 
             return Ok(enrichedBookings);
+        }
+        // GET: /api/admin/event-stats/{eventId}
+        [HttpGet("event-stats/{eventId}")]
+        public IActionResult GetEventStats(string eventId)
+        {
+            var eventObj = _context.Events.Find(e => e.Id == eventId).FirstOrDefault();
+            if (eventObj == null) return NotFound("Event not found");
+
+            var ticketTypes = _context.TicketTypes.Find(t => t.EventId == eventId).ToList();
+            var bookings = _context.Bookings.Find(b => b.EventId == eventId).ToList();
+
+            var stats = ticketTypes.Select(tt =>
+            {
+                var soldCount = bookings
+                    .Where(b => b.TicketTypeId == tt.Id)
+                    .Sum(b => b.Quantity);
+
+                return new
+                {
+                    Category = tt.Name,
+                    Price = tt.Price,
+                    Available = tt.AvailableQuantity,
+                    Sold = soldCount,
+                    Revenue = soldCount * tt.Price
+                };
+            }).ToList();
+
+            var totalStats = new
+            {
+                EventName = eventObj.Name,
+                TotalRevenue = stats.Sum(s => s.Revenue),
+                TotalSold = stats.Sum(s => s.Sold),
+                CategoryStats = stats
+            };
+
+            return Ok(totalStats);
         }
     }
 }

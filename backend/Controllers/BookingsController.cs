@@ -36,8 +36,18 @@ namespace TicketManagementSystemMongo.Controllers
 
         // POST: /api/bookings
         [HttpPost]
+        [Microsoft.AspNetCore.Authorization.Authorize] // ✅ OPTIONAL: Start enforcing login for bookings?
+        // For now, let's just checking specific line logic
         public IActionResult CreateBooking([FromBody] Booking booking)
         {
+            // ✅ LINK USER ID FROM TOKEN
+            // If the user is logged in, this claim will exist.
+            var userId = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
+            if (!string.IsNullOrEmpty(userId))
+            {
+                booking.UserId = userId; // Check if model has UserId field
+            }
+            
             // REMOVED: booking.BookingId = Guid.NewGuid().ToString();
             booking.BookingDate = DateTime.UtcNow;
 
@@ -50,11 +60,21 @@ namespace TicketManagementSystemMongo.Controllers
             if (!eventExists || ticketType == null)
                 return BadRequest("Invalid EventId or TicketTypeId.");
 
+            // ✅ Check Inventory
+            if (ticketType.AvailableQuantity < booking.Quantity)
+            {
+                return BadRequest($"Not enough tickets available. Only {ticketType.AvailableQuantity} left.");
+            }
+
             // Calculate total amount
             booking.TotalAmount = ticketType.Price * booking.Quantity;
             booking.Status = "Pending";
 
             _context.Bookings.InsertOne(booking);
+
+            // ✅ Decrement Inventory
+            var update = Builders<TicketType>.Update.Inc(t => t.AvailableQuantity, -booking.Quantity);
+            _context.TicketTypes.UpdateOne(t => t.Id == ticketType.Id, update);
             
             // FIXED: Return Id instead of BookingId
             return CreatedAtAction(nameof(GetBooking), new { id = booking.Id }, booking);

@@ -56,14 +56,15 @@ const Navbar = () => {
   };
 
   const isAdmin = user?.role === "Admin";
+  const isStaff = user?.role === "Staff";
 
   return (
     <header className="navbar">
       <div className="navbar-container">
-        <Link to={isAdmin ? "/admin" : "/"} className="logo">🎟 Ticket Broker</Link>
+        <Link to={isAdmin ? "/admin" : isStaff ? "/staff" : "/"} className="logo">🎟 Ticket Broker</Link>
 
         <nav className="nav-links">
-          {!isAdmin && <Link to="/events">Events</Link>}
+          {!isAdmin && !isStaff && <Link to="/events">Events</Link>}
 
           {!user && (
             <>
@@ -85,6 +86,8 @@ const Navbar = () => {
                 <div className="dropdown">
                   {isAdmin ? (
                     <Link to="/admin" className="dropdown-link" onClick={() => setOpen(false)}>Admin Dashboard</Link>
+                  ) : isStaff ? (
+                    <Link to="/staff" className="dropdown-link" onClick={() => setOpen(false)}>Staff Dashboard</Link>
                   ) : (
                     <Link to="/profile" className="dropdown-link" onClick={() => setOpen(false)}>Profile</Link>
                   )}

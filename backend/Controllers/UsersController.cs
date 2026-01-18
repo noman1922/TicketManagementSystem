@@ -9,7 +9,7 @@ using System.Text;
 using BCrypt.Net;
 using TicketManagementSystemMongo.Services;
 using TicketManagementSystemMongo.Models.Requests;
-
+using Microsoft.AspNetCore.Authorization; // ✅ Add Authorize
 
 namespace TicketManagementSystemMongo.Controllers
 {
@@ -82,6 +82,31 @@ namespace TicketManagementSystemMongo.Controllers
             emailService.SendVerificationEmail(user.Email, code);
 
             return Ok("Verification code sent to email.");
+        }
+
+        // POST: /api/users/register-staff
+        [HttpPost("register-staff")]
+        [Authorize(Roles = "Admin")] // ✅ Only Admin can create Staff
+        public IActionResult RegisterStaff([FromBody] RegisterRequest request)
+        {
+            var existingUser = _context.Users.Find(u => u.Email == request.Email).FirstOrDefault();
+            if (existingUser != null)
+            {
+                return BadRequest("Email already registered.");
+            }
+
+            var user = new User
+            {
+                Name = request.Name,
+                Email = request.Email,
+                PasswordHash = BCrypt.Net.BCrypt.HashPassword(request.Password),
+                IsVerified = true, // ✅ Auto-verify staff
+                Role = "Staff"     // ✅ Force Staff role
+            };
+
+            _context.Users.InsertOne(user);
+
+            return Ok("Staff account created successfully.");
         }
 
         // POST: /api/users/verify

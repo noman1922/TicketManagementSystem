@@ -137,3 +137,35 @@
     color: #10b981;
     font-size: 2rem;
 }
+
+.ticket-quantity-select {
+    padding: 8px 14px;
+    border-radius: 10px;
+    border: 1px solid #dbeafe;
+    background-color: #ffffff;
+    font-size: 14px;
+    font-weight: 500;
+    color: #1e293b;
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    transition: all 0.2s ease;
+    width: 50%;
+    padding-left: 10px;
+    background-image: url("data:image/svg+xml,%3Csvg fill='none' stroke='%2394a3b8' stroke-width='2' viewBox='0 0 24 24'%3E%3Cpath d='M3 9V5h4M17 5h4v4M21 15v4h-4M7 19H3v-4'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: 10px center;
+    background-size: 16px;
+
+}
+
+.ticket-quantity-select:hover {
+    border-color: #3b82f6;
+
+
+}
+
+.ticket-quantity-select:focus {
+    outline: none;
+    border-color: #2563eb;
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.25);
+}

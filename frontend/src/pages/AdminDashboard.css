@@ -368,7 +368,9 @@
     padding: 20px;
 }
 
-.modal-content.event-modal {
+.modal-content.event-modal,
+.modal-content.staff-modal,
+.modal-content.stats-modal {
     background: white;
     border-radius: 16px;
     width: 100%;
@@ -410,8 +412,9 @@
     color: #1e293b;
 }
 
-/* Event Form */
-.event-form {
+/* Event & Staff Form */
+.event-form,
+.staff-form {
     padding: 24px;
 }
 
@@ -436,6 +439,8 @@
     font-size: 14px;
     font-family: inherit;
     transition: all 0.2s;
+    color: #000000;
+    background-color: #ffffff;
 }
 
 .form-group input:focus,
@@ -447,6 +452,63 @@
 
 .form-group textarea {
     resize: vertical;
+}
+
+/* Ticket Types */
+.ticket-types-container {
+    background: #f8fafc;
+    padding: 16px;
+    border-radius: 8px;
+    border: 1px solid #e2e8f0;
+}
+
+.ticket-type-row {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 10px;
+    align-items: center;
+}
+
+.ticket-type-row input {
+    flex: 1;
+    margin-bottom: 0;
+    /* Override form-group margin */
+}
+
+.btn-remove {
+    background: #fee2e2;
+    color: #991b1b;
+    border: none;
+    width: 32px;
+    height: 32px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+}
+
+.btn-remove:hover {
+    background: #fecaca;
+}
+
+.btn-add-row {
+    margin-top: 10px;
+    background: none;
+    border: 1px dashed #3b82f6;
+    color: #3b82f6;
+    width: 100%;
+    padding: 8px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: all 0.2s;
+}
+
+.btn-add-row:hover {
+    background: #eff6ff;
 }
 
 .form-actions {
@@ -512,4 +574,13 @@
     .admin-table {
         min-width: 600px;
     }
+}
+
+/* Stats Modal Table Fix */
+.stats-modal .admin-table td {
+    color: #334155 !important;
+}
+
+.stats-modal .admin-table th {
+    color: #475569 !important;
 }

@@ -10,6 +10,7 @@ import Register from "./pages/Register";
 import Verify from "./pages/Verify";
 import Payment from "./pages/Payment";
 import AdminDashboard from "./pages/AdminDashboard";
+import StaffDashboard from "./pages/StaffDashboard"; // ✅ Import StaffDashboard
 import Profile from "./pages/Profile";
 import "./animations.css"; // Global animations
 
@@ -31,8 +32,18 @@ function App() {
         <Route
           path="/admin"
           element={
-            <ProtectedRoute requireAdmin={true}>
+            <ProtectedRoute allowedRoles={["Admin"]}>
               <AdminDashboard />
+            </ProtectedRoute>
+          }
+        />
+
+        {/* Protected Staff Route - Requires Staff Role */}
+        <Route
+          path="/staff"
+          element={
+            <ProtectedRoute allowedRoles={["Staff", "Admin"]}>
+              <StaffDashboard />
             </ProtectedRoute>
           }
         />

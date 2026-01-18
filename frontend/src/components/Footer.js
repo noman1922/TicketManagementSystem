@@ -46,8 +46,8 @@ const Footer = () => {
             House 6, Road 16, Block D <br />
             Mirpur 6, Dhaka 1216
           </p>
-          <p>📞 +88 018 35099 555</p>
-          <p>✉️ tickify.live@gmail.com</p>
+          <p>📞 +88 01400019228</p>
+          <p>✉️ mdnomanahamed22@gmail.com</p>
         </div>
       </div>
 

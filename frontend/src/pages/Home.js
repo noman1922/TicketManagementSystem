@@ -42,7 +42,7 @@ const Home = () => {
   return (
     <div className="cinema-home">
       {/* HERO */}
-      <section className="cinema-hero">
+      <section className="cinema-hero fade-in-down">
         <div className="hero-left">
           <span className="hero-badge">Live events happening now</span>
 
@@ -55,12 +55,12 @@ const Home = () => {
             all in one place.
           </p>
 
-          <button onClick={() => navigate("/events")}>
+          <button onClick={() => navigate("/events")} className="btn-animate">
             Explore Events
           </button>
         </div>
 
-        <div className="hero-right">
+        <div className="hero-right slide-in-right">
           <img src="https://images.pexels.com/photos/1190297/pexels-photo-1190297.jpeg" alt="" />
           <img src="https://images.pexels.com/photos/2747446/pexels-photo-2747446.jpeg" alt="" />
           <img src="https://images.pexels.com/photos/1105666/pexels-photo-1105666.jpeg" alt="" />
@@ -70,10 +70,10 @@ const Home = () => {
 
       {/* CATEGORIES */}
       <section className="cinema-categories">
-        <div>🎵 Concerts</div>
-        <div>🏆 Sports</div>
-        <div>🎉 Festivals</div>
-        <div>🎭 Arts</div>
+        <div className="stagger-item">🎵 Concerts</div>
+        <div className="stagger-item">🏆 Sports</div>
+        <div className="stagger-item">🎉 Festivals</div>
+        <div className="stagger-item">🎭 Arts</div>
       </section>
 
       {/* EVENTS */}
@@ -84,10 +84,11 @@ const Home = () => {
         </div>
 
         <div className="events-grid">
-          {events.slice(0, 4).map(event => (
+          {events.slice(0, 4).map((event, index) => (
             <div
               key={event.id}
-              className="cinema-card"
+              className="cinema-card scale-in"
+              style={{ animationDelay: `${index * 0.1}s` }}
               onClick={() => {
                 const token = localStorage.getItem("token");
                 if (token) {

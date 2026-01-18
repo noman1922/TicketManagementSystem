@@ -21,6 +21,8 @@ const Login = () => {
       // Redirect based on role
       if (userData.role === "Admin") {
         navigate("/admin", { replace: true });
+      } else if (userData.role === "Staff") {
+        navigate("/staff", { replace: true });
       } else {
         navigate("/", { replace: true });
       }
@@ -40,6 +42,8 @@ const Login = () => {
       // Check Role
       if (res.data.user.role === "Admin") {
         navigate("/admin");
+      } else if (res.data.user.role === "Staff") {
+        navigate("/staff");
       } else {
         navigate(redirect);
       }
@@ -51,7 +55,7 @@ const Login = () => {
 
 
   return (
-    <div className="auth-page">
+    <div className="auth-page fade-in">
       <h2>Login</h2>
 
       <input placeholder="Email" onChange={e => setEmail(e.target.value)} />
@@ -61,7 +65,7 @@ const Login = () => {
         onChange={e => setPassword(e.target.value)}
       />
 
-      <button onClick={handleLogin}>Login</button>
+      <button onClick={handleLogin} className="btn-animate">Login</button>
     </div>
   );
 };

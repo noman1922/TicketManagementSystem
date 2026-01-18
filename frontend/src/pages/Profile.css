@@ -361,140 +361,157 @@
 }
 
 /* ========================================= */
-/* PRINTABLE TICKET STYLES (MATCHING USER HTML) */
+/* PRINTABLE TICKET STYLES (PREMIUM REDESIGN) */
 /* ========================================= */
 .print-page-container {
     width: 210mm;
     height: 297mm;
-    background: #f2f2f2;
+    background: #e2e8f0;
     display: flex;
     justify-content: center;
     align-items: center;
-    font-family: Arial, Helvetica, sans-serif;
+    font-family: 'Inter', sans-serif;
 }
 
 .print-ticket {
     width: 190mm;
     background: #fff;
-    border-radius: 12px;
+    border-radius: 20px;
     overflow: hidden;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-    /* Subtle shadow for visual check */
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+    border: 1px solid #e5e7eb;
 }
 
 /* HEADER */
 .print-header {
-    background: #2f6b3f;
-    /* User Color */
+    background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
     color: #fff;
-    padding: 22px;
+    padding: 30px;
+    text-align: center;
+    position: relative;
 }
 
 .print-header h1 {
     margin: 0;
-    text-align: center;
-    font-size: 24px;
+    font-size: 28px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 1px;
 }
 
 .print-match {
     display: flex;
     justify-content: center;
     align-items: center;
-    gap: 50px;
-    margin-top: 18px;
+    gap: 40px;
+    margin-top: 25px;
+    padding-bottom: 25px;
+    border-bottom: 1px dashed rgba(255, 255, 255, 0.2);
 }
 
 .print-team {
-    font-size: 20px;
-    font-weight: bold;
+    font-size: 22px;
+    font-weight: 700;
+    width: 40%;
+    text-align: center;
 }
 
 .print-vs {
-    font-size: 30px;
-    font-weight: bold;
+    font-size: 16px;
+    font-weight: 900;
+    background: rgba(255, 255, 255, 0.1);
+    padding: 8px 12px;
+    border-radius: 50%;
 }
 
 .print-details {
     display: flex;
     justify-content: space-between;
-    margin-top: 15px;
-    font-size: 13px;
-}
-
-/* RULES */
-.print-rules {
-    padding: 15px 25px;
-    font-size: 10.5px;
-    line-height: 1.5;
-    color: #000;
-}
-
-/* SPONSORS */
-.print-sponsors {
-    text-align: center;
-    font-size: 12px;
-    padding: 10px;
-    border-top: 1px solid #ddd;
-    color: #000;
+    margin-top: 20px;
+    font-size: 14px;
+    opacity: 0.9;
 }
 
 /* INFO BOXES */
 .print-info-boxes {
     display: grid;
-    grid-template-columns: repeat(5, 1fr);
-    gap: 10px;
-    padding: 15px 20px;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 15px;
+    padding: 25px 30px;
+    background: #f8fafc;
 }
 
 .print-box {
-    background: #f5f5f5;
-    padding: 10px;
-    border-radius: 10px;
+    background: #fff;
+    padding: 15px;
+    border-radius: 12px;
     text-align: center;
-    font-size: 12px;
-    color: #000;
+    border: 1px solid #e2e8f0;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.02);
 }
 
 .print-box strong {
     display: block;
-    margin-top: 4px;
-    font-size: 15px;
+    margin-top: 5px;
+    font-size: 24px;
+    color: #0f172a;
+    font-weight: 800;
 }
 
-/* BOTTOM */
+/* BOTTOM SECTION */
 .print-bottom {
     display: flex;
-    gap: 15px;
-    padding: 15px 20px;
+    gap: 20px;
+    padding: 25px 30px;
 }
 
 .print-user-info {
     flex: 1;
-    background: #f5f5f5;
-    padding: 12px;
-    border-radius: 10px;
-    font-size: 12px;
-    color: #000;
+    background: #fff;
+    padding: 20px;
+    border-radius: 12px;
+    border: 1px solid #e2e8f0;
 }
 
 .print-user-info p {
-    margin: 6px 0;
+    margin: 8px 0;
+    font-size: 14px;
+    color: #475569;
+    border-bottom: 1px solid #f1f5f9;
+    padding-bottom: 8px;
+}
+
+.print-user-info p strong {
+    color: #0f172a;
+    width: 80px;
+    display: inline-block;
 }
 
 .print-qr-box {
-    width: 160px;
-    background: #f5f5f5;
-    border-radius: 10px;
+    width: 180px;
+    height: 180px;
+    background: #fff;
+    border-radius: 12px;
+    border: 2px solid #0f172a;
     display: flex;
     justify-content: center;
     align-items: center;
+    padding: 10px;
+}
+
+.print-qr-box img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
 }
 
 /* FOOTER */
 .print-footer {
     text-align: center;
-    font-size: 11px;
-    padding: 12px;
-    border-top: 1px solid #ddd;
-    color: #000;
+    font-size: 12px;
+    padding: 15px;
+    color: #94a3b8;
+    background: #f8fafc;
+    border-top: 1px solid #e2e8f0;
+    font-weight: 500;
 }
