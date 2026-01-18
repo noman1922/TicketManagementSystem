@@ -103,5 +103,39 @@ namespace TicketManagementSystemMongo.Controllers
                 });
             }
         }
+
+        [HttpPost("test-email")]
+        public async Task<IActionResult> TestEmail([FromBody] object payload)
+        {
+            try
+            {
+                // Hardcoded test
+                var smtpServer = "smtp.gmail.com";
+                var port = 587;
+                var email = "noman.ahmed19228@gmail.com";
+                var password = "sqjh cppl uzjp bolh"; // Ensure this is correct
+
+                using (var client = new MailKit.Net.Smtp.SmtpClient())
+                {
+                    client.ServerCertificateValidationCallback = (s, c, h, e) => true;
+                    await client.ConnectAsync(smtpServer, port, MailKit.Security.SecureSocketOptions.StartTls);
+                    await client.AuthenticateAsync(email, password);
+                    
+                    var message = new MimeKit.MimeMessage();
+                    message.From.Add(new MimeKit.MailboxAddress("Test", email));
+                    message.To.Add(new MimeKit.MailboxAddress("Test", email)); // Send to self
+                    message.Subject = "Test Email";
+                    message.Body = new MimeKit.TextPart("plain") { Text = "It works!" };
+                    
+                    await client.SendAsync(message);
+                    await client.DisconnectAsync(true);
+                }
+                return Ok("✅ Email Sent Successfully to yourself!");
+            }
+            catch (Exception ex)
+            {
+                 return BadRequest($"❌ Error: {ex.Message} \nTrace: {ex.StackTrace}");
+            }
+        }
     }
 }
