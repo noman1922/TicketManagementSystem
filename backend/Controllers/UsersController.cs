@@ -68,7 +68,7 @@ namespace TicketManagementSystemMongo.Controllers
                 Name = request.Name,
                 Email = request.Email,
                 PasswordHash = BCrypt.Net.BCrypt.HashPassword(request.Password),
-                IsVerified = false
+                IsVerified = true // ✅ Auto-Verify (Email optional)
             };
 
             // Generate 6-digit code
