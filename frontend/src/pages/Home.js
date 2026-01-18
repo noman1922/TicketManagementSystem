@@ -55,6 +55,13 @@ const Home = () => {
 
   return (
     <div className="cinema-home">
+      {/* 🛑 DEBUG BANNER - REMOVE LATER */}
+      <div style={{ background: 'red', color: 'white', padding: '10px', textAlign: 'center', fontWeight: 'bold' }}>
+        DEBUG: API URL is [{process.env.REACT_APP_API_URL || "undefined"}]
+        <br />
+        Effective BaseURL: [{api.defaults.baseURL}]
+      </div>
+
       {/* HERO */}
       <section className="cinema-hero fade-in-down">
         <div className="hero-left">
@@ -121,9 +128,11 @@ const Home = () => {
                 }
               }}
             >
-              {/* ✅ DYNAMIC IMAGE */}
+              {/* ✅ DYNAMIC IMAGE (Fixed for Production) */}
               <img
-                src={event.imageUrl ? `http://localhost:5208${event.imageUrl}` : getEventImage(event.name)}
+                src={event.imageUrl
+                  ? (event.imageUrl.startsWith("http") ? event.imageUrl : `${api.defaults.baseURL.replace("/api", "")}${event.imageUrl}`)
+                  : getEventImage(event.name)}
                 alt={event.name}
               />
 
