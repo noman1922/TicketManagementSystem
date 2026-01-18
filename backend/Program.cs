@@ -25,9 +25,10 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowReactApp",
-        policy => policy.WithOrigins("http://localhost:3000")
+        policy => policy.SetIsOriginAllowed(origin => true) // Allow any origin (Vercel, Localhost, etc.)
                         .AllowAnyHeader()
-                        .AllowAnyMethod());
+                        .AllowAnyMethod()
+                        .AllowCredentials()); // Essential for some requests
 });
 
 // ✅ Swagger

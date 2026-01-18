@@ -263,6 +263,10 @@ const AdminDashboard = () => {
                         <span className="nav-icon">📋</span> <span className="nav-label">Bookings</span>
                     </button>
 
+                    <button className="logout-btn" onClick={handleLogout}>
+                        <span className="nav-icon">🚪</span> <span className="nav-label">Logout</span>
+                    </button>
+
                 </nav>
             </div>
 
