@@ -53,6 +53,19 @@ const Home = () => {
     return false;
   });
 
+  // Helper for production image URLs
+  const getImageUrl = (event) => {
+    if (!event.imageUrl) return getEventImage(event.name);
+
+    if (event.imageUrl.startsWith("http")) {
+      return event.imageUrl;
+    }
+
+    // Append BaseURL (remove /api suffix if present to avoid double api/api)
+    const base = api.defaults.baseURL ? api.defaults.baseURL.replace("/api", "") : "";
+    return `${base}${event.imageUrl}`;
+  };
+
   return (
     <div className="cinema-home">
 
@@ -122,11 +135,9 @@ const Home = () => {
                 }
               }}
             >
-              {/* ✅ DYNAMIC IMAGE (Fixed for Production) */}
+              {/* ✅ DYNAMIC IMAGE (Refactored) */}
               <img
-                src={event.imageUrl
-                  ? (event.imageUrl.startsWith("http") ? event.imageUrl : `${api.defaults.baseURL.replace("/api", "")}${event.imageUrl}`)
-                  : getEventImage(event.name)}
+                src={getImageUrl(event)}
                 alt={event.name}
               />
 
