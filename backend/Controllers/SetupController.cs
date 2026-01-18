@@ -91,40 +91,6 @@ namespace TicketManagementSystemMongo.Controllers
                 };
                 _context.Users.InsertOne(newAdmin);
 
-                // ==========================================
-                // 4. SEED SAMPLE EVENTS (So Home Page isn't empty)
-                // ==========================================
-                var eventsCount = _context.Events.CountDocuments(_ => true);
-                if (eventsCount == 0)
-                {
-                    var sampleEvents = new List<Event>
-                    {
-                        new Event {
-                            Name = "Grand Rock Concert",
-                            Date = DateTime.UtcNow.AddDays(10),
-                            Location = "Dhaka Arena",
-                            Description = "An electrifying night of rock music.",
-                            ImageUrl = "https://images.pexels.com/photos/1190297/pexels-photo-1190297.jpeg", // External URL for test
-                            Category = "Concerts",
-                            Organizer = "Rock Nation",
-                            FormattedDate = DateTime.UtcNow.AddDays(10).ToString("yyyy-MM-dd"),
-                            FormattedTime = "19:00"
-                        },
-                        new Event {
-                            Name = "Live Football Final",
-                            Date = DateTime.UtcNow.AddDays(5),
-                            Location = "National Stadium",
-                            Description = "The biggest match of the year.",
-                            ImageUrl = "https://images.pexels.com/photos/274506/pexels-photo-274506.jpeg",
-                            Category = "Sports",
-                            Organizer = "Sports Federation",
-                            FormattedDate = DateTime.UtcNow.AddDays(5).ToString("yyyy-MM-dd"),
-                            FormattedTime = "16:00"
-                        }
-                    };
-                    _context.Events.InsertMany(sampleEvents);
-                }
-
                 return Ok(new { 
                     status = "Success", 
                     message = "✅ Admin Created: admin / admin123", 
