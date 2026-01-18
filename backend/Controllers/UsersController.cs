@@ -72,16 +72,17 @@ namespace TicketManagementSystemMongo.Controllers
             };
 
             // Generate 6-digit code
-            var code = new Random().Next(100000, 999999).ToString();
-            user.VerificationCode = code;
+            // var code = new Random().Next(100000, 999999).ToString();
+            // user.VerificationCode = code;
+            user.VerificationCode = null; // ✅ No Verification Code needed
 
             _context.Users.InsertOne(user);
 
             // Send verification email
-            var emailService = new EmailService(_config);
-            emailService.SendVerificationEmail(user.Email, code);
+            // var emailService = new EmailService(_config);
+            // emailService.SendVerificationEmail(user.Email, code);
 
-            return Ok("Verification code sent to email.");
+            return Ok("Account created successfully (Verification skipped).");
         }
 
         // POST: /api/users/register-staff

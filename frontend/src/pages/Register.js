@@ -26,8 +26,8 @@ const Register = () => {
         password: password,
       });
 
-      alert("Registration successful. Please verify your account.");
-      navigate("/verify", { state: { email: email } });
+      alert("Registration successful! Please login.");
+      navigate("/login");
     } catch (error) {
       console.error(error);
       alert("Registration failed. Email may already exist.");

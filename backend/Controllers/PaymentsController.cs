@@ -125,11 +125,8 @@ namespace TicketManagementSystemMongo.Controllers
                         Console.WriteLine($"✅ Booking {booking.Id} Confirmed!");
 
                         // 3. Send Email Receipt
-                        var eventDetails = _context.Events.Find(e => e.Id == booking.EventId).FirstOrDefault();
-                        var ticketType = _context.TicketTypes.Find(t => t.Id == booking.TicketTypeId).FirstOrDefault();
-
-                        var emailService = new TicketManagementSystemMongo.Services.EmailService(_configuration);
-                        emailService.SendReceipt(booking, eventDetails, ticketType);
+                        // var emailService = new TicketManagementSystemMongo.Services.EmailService(_configuration);
+                        // emailService.SendReceipt(booking, eventDetails, ticketType);
                     }
                 }
             }
@@ -148,12 +145,12 @@ namespace TicketManagementSystemMongo.Controllers
             _context.Bookings.UpdateOne(b => b.Id == req.BookingId, update);
 
             // Fetch details for receipt
-            var eventDetails = _context.Events.Find(e => e.Id == booking.EventId).FirstOrDefault();
-            var ticketType = _context.TicketTypes.Find(t => t.Id == booking.TicketTypeId).FirstOrDefault();
+            // var eventDetails = _context.Events.Find(e => e.Id == booking.EventId).FirstOrDefault();
+            // var ticketType = _context.TicketTypes.Find(t => t.Id == booking.TicketTypeId).FirstOrDefault();
 
             // Send Email Receipt
-            var emailService = new TicketManagementSystemMongo.Services.EmailService(_configuration);
-            emailService.SendReceipt(booking, eventDetails, ticketType);
+            // var emailService = new TicketManagementSystemMongo.Services.EmailService(_configuration);
+            // emailService.SendReceipt(booking, eventDetails, ticketType);
 
             return Ok(new { message = "Payment confirmed and receipt sent" });
         }
