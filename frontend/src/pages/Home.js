@@ -55,12 +55,6 @@ const Home = () => {
 
   return (
     <div className="cinema-home">
-      {/* 🛑 DEBUG BANNER - REMOVE LATER */}
-      <div style={{ background: 'red', color: 'white', padding: '10px', textAlign: 'center', fontWeight: 'bold' }}>
-        DEBUG: API URL is [{process.env.REACT_APP_API_URL || "undefined"}]
-        <br />
-        Effective BaseURL: [{api.defaults.baseURL}]
-      </div>
 
       {/* HERO */}
       <section className="cinema-hero fade-in-down">
