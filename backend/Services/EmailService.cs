@@ -1,5 +1,6 @@
-using System.Net;
-using System.Net.Mail;
+using MimeKit;
+using MailKit.Net.Smtp;
+using MailKit.Security;
 using TicketManagementSystemMongo.Models;
 
 namespace TicketManagementSystemMongo.Services
@@ -23,7 +24,7 @@ namespace TicketManagementSystemMongo.Services
         public void SendReceipt(Booking booking, Event eventDetails, TicketType ticketType)
         {
             string subject = $"Payment Receipt - {eventDetails?.Name}";
-            string body = $@"
+             string body = $@"
                 <div style='font-family: Arial, sans-serif; padding: 20px; border: 1px solid #ddd;'>
                     <h2 style='color: #3b82f6;'>Payment Receipt</h2>
                     <p>Hi <strong>{booking.CustomerName}</strong>,</p>
@@ -68,7 +69,7 @@ namespace TicketManagementSystemMongo.Services
             var senderPassword = _configuration["EmailSettings:SenderPassword"] ?? "";
 
             // 2. Run in Background (Fire-and-Forget)
-            Task.Run(() =>
+            Task.Run(async () =>
             {
                 try
                 {
@@ -78,24 +79,26 @@ namespace TicketManagementSystemMongo.Services
                         return;
                     }
 
-                    var client = new SmtpClient(smtpServer, port)
+                    var message = new MimeMessage();
+                    message.From.Add(new MailboxAddress("Ticket System", senderEmail));
+                    message.To.Add(new MailboxAddress("", toEmail));
+                    message.Subject = subject;
+
+                    var builder = new BodyBuilder { HtmlBody = body };
+                    message.Body = builder.ToMessageBody();
+
+                    using (var client = new SmtpClient())
                     {
-                        Credentials = new NetworkCredential(senderEmail, senderPassword),
-                        EnableSsl = true
-                    };
+                        // Accept all SSL certificates (in case of weird Render cert issues)
+                        client.ServerCertificateValidationCallback = (s, c, h, e) => true;
 
-                    var mailMessage = new MailMessage
-                    {
-                        From = new MailAddress(senderEmail),
-                        Subject = subject,
-                        Body = body,
-                        IsBodyHtml = true
-                    };
+                        await client.ConnectAsync(smtpServer, port, SecureSocketOptions.StartTls);
+                        await client.AuthenticateAsync(senderEmail, senderPassword);
+                        await client.SendAsync(message);
+                        await client.DisconnectAsync(true);
+                    }
 
-                    mailMessage.To.Add(toEmail);
-
-                    client.Send(mailMessage);
-                    Console.WriteLine($"✅ Email sent to {toEmail}");
+                    Console.WriteLine($"✅ Email sent to {toEmail} via MailKit");
                 }
                 catch (Exception ex)
                 {
