@@ -1,7 +1,9 @@
 # 🎟️ Ticket Broker - Full-Stack Event Ticketing System
 A high-performance, secure, and modern event ticket booking platform built with **ASP.NET Core**, **React**, and **MongoDB**.
-### 🔗 Live Project Link
-- **Vercel:** [https://ticket-management-system-dusky.vercel.app/](https://ticket-management-system-dusky.vercel.app/)
+### 🔗 Live Links
+- **Full Project (Vercel):** [https://ticket-management-system-dusky.vercel.app/](https://ticket-management-system-dusky.vercel.app/)
+- **Backend (Render):** [https://ticketmanagementsystem-gqg7.onrender.com](https://ticketmanagementsystem-gqg7.onrender.com)
+
 ---
 ## 📖 Table of Contents
 1. [Project Overview](#project-overview)
@@ -67,19 +69,44 @@ graph TD
 ```mermaid
 erDiagram
     USER {
-        
+        string id PK
+        string name
+        string email
+        string passwordHash
+        string role "User | Admin | Staff"
+        bool isVerified
     }
     EVENT {
-       
+        string id PK
+        string name
+        string description
+        string location
+        datetime date
+        string imageUrl
     }
     TICKET_TYPE {
-        
+        string id PK
+        string eventId FK
+        string name "VIP | General"
+        decimal price
+        int capacity
     }
     BOOKING {
-        
+        string id PK
+        string userId FK
+        string eventId FK
+        string ticketTypeId FK
+        int quantity
+        decimal totalAmount
+        string status "Paid | Used | Cancelled"
+        datetime bookingDate
     }
     QR_SCAN_LOG {
-      
+        string id PK
+        string bookingId FK
+        string scannedBy FK
+        datetime scanTime
+        bool isValid
     }
     USER ||--o{ BOOKING : "makes"
     EVENT ||--o{ TICKET_TYPE : "has"
